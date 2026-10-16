@@ -2,7 +2,7 @@
 
 This repository holds the analysis scripts behind five preprints by Leo Probst, together with the frozen research state of the measurement software that produced their inputs. It contains code only: no patient data, no ECG waveforms, no record-level or individual-level values, and no result tables. All numbers reported in the manuscripts are in the manuscripts and their supplements.
 
-Status: v1.0.0 (16 October 2026) is the version cited in the preprints of the first four works. v1.1.0 adds `pub13_classical_rules/` and leaves everything else unchanged. An archived copy with a DOI (Zenodo) may follow. Aggregate results are part of the preprints and their supplementary files, not of this repository.
+Status: released; current version v1.2.0 (17 October 2026). Earlier releases v1.0.0 and v1.1.0 remain unchanged and are cited by the respective preprints. An archived copy with a DOI (Zenodo) may follow. Aggregate results are part of the preprints and their supplementary files, not of this repository.
 
 ## The five works
 
