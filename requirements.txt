@@ -1,0 +1,19 @@
+# Third-party packages imported by the analysis scripts of the four work folders.
+# Versions are those of the environment in which the scripts were prepared (pip freeze, reduced to what the scripts import).
+# The measurement package in looplens_snapshot_2026-10-07/ has its own frozen list (requirements-lock-win-py312.txt).
+numpy==2.5.3
+scipy==1.18.1
+pandas==2.3.3
+pyarrow==25.0.1
+duckdb==1.5.6
+matplotlib==3.11.2
+pillow==12.3.0
+scikit-learn==1.9.1
+statsmodels==0.15.0
+wfdb==4.3.1
+neurokit2==0.2.13
+psutil==7.2.2
+pytest==9.1.1
+# Windows only, used by pub12_program_comparison/benchmark/braveheart_batch_auto.py (GUI automation of a Windows program)
+pywinauto==0.6.9; sys_platform == "win32"
+pywin32==312; sys_platform == "win32"

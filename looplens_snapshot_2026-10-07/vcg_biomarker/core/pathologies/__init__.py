@@ -1,0 +1,2 @@
+from .registry import PathologyRegistry, PathologyDefinition
+from .ptbxl_pathologies import register_ptbxl_pathologies

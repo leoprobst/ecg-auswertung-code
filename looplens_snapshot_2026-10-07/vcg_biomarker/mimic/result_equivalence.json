@@ -1,0 +1,34 @@
+[
+  {
+    "module": "validation.py",
+    "from_sha256": "10e35a29d681dcbe539d3f2a7ba76669392101a10326713e03a8113c775e3a30",
+    "to_sha256": "b45f3e7f0b4b4506e990d86f93d7d26c3a69cbc4b4fec25497ee4f97a41744eb",
+    "tests": [
+      "vcg_biomarker/tests/test_validation_cache_streaming.py::test_stream_matches_duckdb_values_types_and_sorted_analysis_input",
+      "vcg_biomarker/tests/test_validation_cache_streaming.py::test_stream_pause_keeps_verified_blocks_and_resumes_without_rewriting",
+      "vcg_biomarker/tests/test_validation_cache_streaming.py::test_stream_wide_schema_and_row_count_guard"
+    ],
+    "reason": "A155: bounded footer schema union and checkpointed Arrow cache; exact values and dtypes; deterministic source order; old COPY order unspecified, all three cache-consuming validation loaders sort clinical keys before sampling. Synthetic comparisons and 8000 real rows x 2223 columns checked."
+  },
+  {
+    "module": "thesis_tests.py",
+    "from_sha256": "a1ae63b34a5f31cfc639b3fba6e075a76839cfb3ad3d27a0c0db86b9586045a5",
+    "to_sha256": "e380a9f908e8580ddd06627d3993912d357c7bda1e5df805b639a0301bf4f210",
+    "tests": [
+      "vcg_biomarker/tests/test_thesis_stage_checkpoint.py::test_verified_thesis_block_resumes_with_identical_rows",
+      "vcg_biomarker/tests/test_thesis_stage_checkpoint.py::test_changed_inputs_and_damaged_checkpoint_do_not_reuse_rows",
+      "vcg_biomarker/tests/test_thesis_stage_checkpoint.py::test_force_recomputes_and_replaces_block"
+    ],
+    "reason": "A155 thesis-stage per-thesis durable Parquet checkpoints; verified input-bound rows are reused in the same order; complete result table and scientific computations unchanged."
+  },
+  {
+    "module": "survival.py",
+    "from_sha256": "73acbe62a40175e0d85b19caf825259ff9b5dcbc8b04f68052fcf372cde193ab",
+    "to_sha256": "5dd5dfad40568ed820da04dc0c70e09204a17e3451aff75c19b0eaccb0575036",
+    "tests": [
+      "vcg_biomarker/tests/test_survival_nullable.py::test_nullable_offsets_match_float_policy_and_expected_censoring",
+      "vcg_biomarker/tests/test_survival_nullable.py::test_duckdb_nullable_days_with_missing_registry_coverage_do_not_raise"
+    ],
+    "reason": "Representational fix: nullable DuckDB day-offset comparisons with missing coverage use False, exactly as the existing float/NaN censoring rule. Missing follow-up remains excluded; known deaths, horizon, registry coverage, negative-date exclusion and last-contact sensitivity are unchanged. Explicit expected cohorts and dtype-equivalence regression tests cover both censoring rules."
+  }
+]

@@ -1,0 +1,14 @@
+{
+  "mapping_system": "PhecodeX",
+  "repository": "https://github.com/PheWAS/phecodeX",
+  "commit": "6c5c6f787651c06351fe5a7c558a0a05c7a2f8a7",
+  "retrieved_at": "2026-07-26",
+  "files": {
+    "phecodeX_R_labels.csv": "7ca090f8528efdddd8a7d2aed55cfd3ba739a4fffd8a45632a8c31a587dfad84",
+    "phecodeX_R_map.csv": "bc4bd192ab4750c0403cbe3606b68ab32ca637ff2d29fa94b4ec4c3e080579f0",
+    "phecodeX_R_rollup_map.csv": "b57311cd22a6adc3ac1595daa7261b0de761eb4b4010acf324fd99792a05bc6e",
+    "phecodeX_R_sex.csv": "9f11b0029bccaa428d10abecd28658e7a3216cc77cafc37a244941be3c90700b"
+  },
+  "citation": "Bastarache et al. Next-generation phenotyping: introducing phecodeX for enhanced discovery research in medical phenomics.",
+  "notes": "Pinned local research mapping. Runs record this commit and all file hashes; no runtime network access is required."
+}

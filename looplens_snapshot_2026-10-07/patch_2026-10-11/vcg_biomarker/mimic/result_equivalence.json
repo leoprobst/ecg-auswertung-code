@@ -1,0 +1,188 @@
+[
+  {
+    "module": "validation.py",
+    "from_sha256": "10e35a29d681dcbe539d3f2a7ba76669392101a10326713e03a8113c775e3a30",
+    "to_sha256": "b45f3e7f0b4b4506e990d86f93d7d26c3a69cbc4b4fec25497ee4f97a41744eb",
+    "tests": [
+      "vcg_biomarker/tests/test_validation_cache_streaming.py::test_stream_matches_duckdb_values_types_and_sorted_analysis_input",
+      "vcg_biomarker/tests/test_validation_cache_streaming.py::test_stream_pause_keeps_verified_blocks_and_resumes_without_rewriting",
+      "vcg_biomarker/tests/test_validation_cache_streaming.py::test_stream_wide_schema_and_row_count_guard"
+    ],
+    "reason": "A155: bounded footer schema union and checkpointed Arrow cache; exact values and dtypes; deterministic source order; old COPY order unspecified, all three cache-consuming validation loaders sort clinical keys before sampling. Synthetic comparisons and 8000 real rows x 2223 columns checked."
+  },
+  {
+    "module": "thesis_tests.py",
+    "from_sha256": "a1ae63b34a5f31cfc639b3fba6e075a76839cfb3ad3d27a0c0db86b9586045a5",
+    "to_sha256": "e380a9f908e8580ddd06627d3993912d357c7bda1e5df805b639a0301bf4f210",
+    "tests": [
+      "vcg_biomarker/tests/test_thesis_stage_checkpoint.py::test_verified_thesis_block_resumes_with_identical_rows",
+      "vcg_biomarker/tests/test_thesis_stage_checkpoint.py::test_changed_inputs_and_damaged_checkpoint_do_not_reuse_rows",
+      "vcg_biomarker/tests/test_thesis_stage_checkpoint.py::test_force_recomputes_and_replaces_block"
+    ],
+    "reason": "A155 thesis-stage per-thesis durable Parquet checkpoints; verified input-bound rows are reused in the same order; complete result table and scientific computations unchanged."
+  },
+  {
+    "module": "phenome.py",
+    "from_sha256": "3fc8cdd1d3454adc30a652031a515011c260104e9c1df20574103bfcd0cba5e8",
+    "to_sha256": "f84703f4e2b77525d7134635f753545c22aee0573cbe2eadd33b70ee58ad3a63",
+    "tests": [
+      "vcg_biomarker/tests/test_phenome_checkpoint_recovery.py::test_completed_blocks_resume_identically_without_loading_features",
+      "vcg_biomarker/tests/test_phenome_checkpoint_recovery.py::test_incomplete_block_computes_only_missing_work",
+      "vcg_biomarker/tests/test_phenome_checkpoint_recovery.py::test_damaged_or_stale_blocks_are_rejected",
+      "vcg_biomarker/tests/test_phenome_checkpoint_recovery.py::test_changed_feature_selection_falls_back_without_inventing_available_markers",
+      "vcg_biomarker/tests/test_phenome_checkpoint_recovery.py::test_exact_equivalence_to_bound_streaming_functions"
+    ],
+    "reason": "Reuse complete input/key-bound, fully SHA-verified feature blocks before raw data loading and parallel worker preparation. Missing chunks and unavailable feature selections use the original computation. Exact frame values, dtypes and ordering match the pinned bound functions, including bootstrapped replication. No schema, statistic, key, seed, cohort, or checkpoint-version change."
+  },
+  {
+    "module": "survival.py",
+    "from_sha256": "73acbe62a40175e0d85b19caf825259ff9b5dcbc8b04f68052fcf372cde193ab",
+    "to_sha256": "5dd5dfad40568ed820da04dc0c70e09204a17e3451aff75c19b0eaccb0575036",
+    "tests": [
+      "vcg_biomarker/tests/test_survival_nullable.py::test_nullable_offsets_match_float_policy_and_expected_censoring",
+      "vcg_biomarker/tests/test_survival_nullable.py::test_duckdb_nullable_days_with_missing_registry_coverage_do_not_raise"
+    ],
+    "reason": "Representational fix: nullable DuckDB day-offset comparisons with missing coverage use False, exactly as the existing float/NaN censoring rule. Missing follow-up remains excluded; known deaths, horizon, registry coverage, negative-date exclusion and last-contact sensitivity are unchanged. Explicit expected cohorts and dtype-equivalence regression tests cover both censoring rules."
+  },
+  {
+    "module": "future_phenome.py",
+    "from_sha256": "6adcd0474ef4f066ce5178095ae83395ccab913037dfe4f48bf787422ec42286",
+    "to_sha256": "247ec2d4eb07f39b8f34ecd3542ab1da42ae4b76bd390233c6a6d2e29bae08f0",
+    "tests": [
+      "vcg_biomarker/tests/test_future_feature_index_clause.py::test_feature_index_matches_explicit_join_with_and_without_comparator",
+      "vcg_biomarker/tests/test_future_feature_index_clause.py::test_duplicate_subject_guard_is_unchanged"
+    ],
+    "reason": "Restore missing local read_features binding before the existing Future-PheWAS index SQL query. The intended feature_parquet_clause is identical to adjacent loaders; no SELECT, JOIN, split filtering, ordering, candidate, seed, statistic or checkpoint-key changes. Exact explicit-query frame comparison covers optional comparator, nullable fields, locked-test exclusion and unchanged duplicate-subject rejection. Earlier steps were completed before this NameError, and no Future feature-index results previously existed."
+  },
+  {
+    "module": "association_domains.py",
+    "from_sha256": "d697d2c0f4059b85d477caae5b1375fa4d62243c7712ff6579d2bf92b0e08b81",
+    "to_sha256": "d3ae26cd1401dfd3d8fb8e540d226f4f29442101bc6a71af545495c446a8763d",
+    "tests": [
+      "vcg_biomarker/tests/test_association_index_resume.py::test_index_resume_is_exact_and_does_not_repeat_join",
+      "vcg_biomarker/tests/test_association_index_resume.py::test_damaged_index_is_rejected_without_overwriting_it",
+      "vcg_biomarker/tests/test_association_index_resume.py::test_definitions_and_context_are_bound_to_index_key"
+    ],
+    "reason": "Preserve the identical association-index query and index selection. Reuse only an index with a signed input/version/definition/context key and complete output fingerprint; corrupted index fails closed. Cold checkpoint construction uses one DuckDB thread, preserving deterministic SQL ordering and values while lowering peak memory. Exact old two-thread/new one-thread frame comparison and corruption/key-change tests pass."
+  },
+  {
+    "module": "phenome.py",
+    "from_sha256": "f84703f4e2b77525d7134635f753545c22aee0573cbe2eadd33b70ee58ad3a63",
+    "to_sha256": "4e76040be5bfd063ac83fafd1bd6efed9f8e9cb8767ff25b3a2a0998cc6daa3f",
+    "tests": [
+      "vcg_biomarker/tests/test_phenome_finalization_resume.py::test_overlay_is_exactly_equal_to_bound_implementation",
+      "vcg_biomarker/tests/test_phenome_finalization_resume.py::test_completed_adjustment_blocks_skip_raw_loading_and_model_fits"
+    ],
+    "reason": "No statistics, FDR, random seeds, candidates or checkpoint keys change. Overlay retains identical merge and assignments but drops temporary columns once; exact comparison against SHA-pinned bound function. Complete adjustment blocks verified with the same chunk integrity/key checks before raw loading; damaged checkpoints rejected and bytes/mtimes preserved. Additional progress messages expose materialization/FDR/overlay phases."
+  },
+  {
+    "module": "frame_checkpoints.py",
+    "from_sha256": "15a7ba1505ae891e62e60544d4bf6b51ce8988445c8f652d5459ac9bada5fab0",
+    "to_sha256": "d72e13a19fd4ecda5ad789d6bfa5924993951926e9fea6f0a868ab24808bdcf4",
+    "tests": [
+      "vcg_biomarker/tests/test_future_parallel_resume.py::test_two_processes_compute_one_chunk_and_reuse_it",
+      "vcg_biomarker/tests/test_future_parallel_resume.py::test_process_death_releases_claim"
+    ],
+    "reason": "Serialize unchanged chunk verification/computation/publication with OS-released per-chunk locks; unchanged checkpoint keys/versions/serialization. Reuse completed Future blocks before raw JOIN. Cache identical row-selected covariates within one target and reuse the identical primary tie mask, preserving all model calls, numerical operations and ordering. Exact pinned prior implementation comparison includes missing markers and same-day competing events; subprocess race and process-death tests cover exclusive publication and no overwrite."
+  },
+  {
+    "module": "future_phenome.py",
+    "from_sha256": "247ec2d4eb07f39b8f34ecd3542ab1da42ae4b76bd390233c6a6d2e29bae08f0",
+    "to_sha256": "1b7acf1eab6d0f0003e88caa1d92f4297b77a500820c25846def5053fa1863a4",
+    "tests": [
+      "vcg_biomarker/tests/test_future_parallel_resume.py::test_screen_and_tie_mask_reuse_match_bound_values_and_dtypes",
+      "vcg_biomarker/tests/test_future_parallel_resume.py::test_completed_future_block_skips_raw_join_and_preserves_checkpoint"
+    ],
+    "reason": "Serialize unchanged chunk verification/computation/publication with OS-released per-chunk locks; unchanged checkpoint keys/versions/serialization. Reuse completed Future blocks before raw JOIN. Cache identical row-selected covariates within one target and reuse the identical primary tie mask, preserving all model calls, numerical operations and ordering. Exact pinned prior implementation comparison includes missing markers and same-day competing events; subprocess race and process-death tests cover exclusive publication and no overwrite."
+  },
+  {
+    "module": "phenome.py",
+    "from_sha256": "4e76040be5bfd063ac83fafd1bd6efed9f8e9cb8767ff25b3a2a0998cc6daa3f",
+    "to_sha256": "7c579a42ff5bb3701357eff4f9523e32350b216395ba18dd09667b98a4cb9abe",
+    "tests": [
+      "vcg_biomarker/tests/test_future_scope_defer.py::test_default_dispatch_and_retained_checkpoint_science_unchanged",
+      "vcg_biomarker/tests/test_future_scope_defer.py::test_deferred_arm_preserves_original_files_and_never_runs_models",
+      "vcg_biomarker/tests/test_future_scope_defer.py::test_stale_or_unapproved_scope_fails_closed",
+      "vcg_biomarker/tests/test_future_scope_defer.py::test_full_scope_and_deferred_manifest_cannot_share_cache_identity"
+    ],
+    "reason": "Default full-scope dispatch, all retained scientific functions and checkpoint input/key expressions remain unchanged, verified against SHA-pinned prior source. Explicit user-authorized Future deferral is a declared scope amendment, not an equivalence claim for the omitted arm; a separate final-manifest input hash prevents full/deferred cache reuse. Already completed non-Future results remain equivalent. Skipped outputs are namespaced not-executed compatibility tables and an explicit reportable scope declaration, never an overwrite or claim of completed Future screening."
+  },
+  {
+    "module": "broad_axis_stage.py",
+    "from_sha256": "ea7f50084988b68b6c0ff394cb6628d588d0cf43e7ef144b1b738b992f1b12dd",
+    "to_sha256": "2be1ae48192d2a81f8212e88d77e132f97854441add870107676285a0090ebb9",
+    "tests": [
+      "vcg_biomarker/tests/test_broad_binary_memory.py::test_science_and_outer_keys_unchanged",
+      "vcg_biomarker/tests/test_broad_binary_memory.py::test_batched_binary_exactly_matches_pinned_results",
+      "vcg_biomarker/tests/test_broad_binary_memory.py::test_actual_axis_resumes_saved_memory_batch_exactly",
+      "vcg_biomarker/tests/test_broad_binary_memory.py::test_old_checkpoint_reused_without_writing"
+    ],
+    "reason": "Operational runtime-memory-capped transient binary marker batches preserve the original outer block partition, checkpoint keys, scientific screening functions, data selection and final row order. Exact comparison against pinned old stage with ties and missingness; actual stage pause after durable inner batch resumes without repeating that batch and matches old results exactly. Additional progress after durable outer and inner checkpoints; default ungranted execution retains one transient batch."
+  },
+  {
+    "module": "broad_axis_stage.py",
+    "from_sha256": "2be1ae48192d2a81f8212e88d77e132f97854441add870107676285a0090ebb9",
+    "to_sha256": "9d69cc175a201093009ba1859a3babc7e79fdb59525d1f6bdf606fb2167dfbb7",
+    "tests": [
+      "vcg_biomarker/tests/test_broad_adjustment_packets.py::test_prepared_fits_exactly_match_pinned_source",
+      "vcg_biomarker/tests/test_broad_adjustment_packets.py::test_actual_packet_resume_preserves_results_and_skips_saved_queries",
+      "vcg_biomarker/tests/test_future_parallel_resume.py::test_two_processes_compute_one_chunk_and_reuse_it",
+      "vcg_biomarker/tests/test_future_parallel_resume.py::test_process_death_releases_claim"
+    ],
+    "reason": "Exact pinned old results and dtypes for binary/continuous, missing marker/covariates, duplicate ECGs and split-specific deterministic indexing. Stream a shared development-only projection with collision-proof marker aliases; prepare the unchanged patient selection once per packet/split. Same model operations, robust HC3, model family, thresholds and final full-family FDR. Exclusive OS-released packet locks, durable validated checkpoints, interruption and helper reuse before model queries. Default unprepared fitter unchanged. Release dead discovery intermediates and preserve screening/adjustment checkpoints after completion."
+  },
+  {
+    "module": "broad_axis_adjustment.py",
+    "from_sha256": "8e188b6a76ce8b9b49d42698d6752ce02e26962aa608d6860892df2e6691095e",
+    "to_sha256": "f9f9ac0348b52202a8622767841263d98888584bfd8da5285c84c14715d353e6",
+    "tests": [
+      "vcg_biomarker/tests/test_broad_adjustment_packets.py::test_prepared_fits_exactly_match_pinned_source",
+      "vcg_biomarker/tests/test_broad_adjustment_packets.py::test_actual_packet_resume_preserves_results_and_skips_saved_queries",
+      "vcg_biomarker/tests/test_future_parallel_resume.py::test_two_processes_compute_one_chunk_and_reuse_it",
+      "vcg_biomarker/tests/test_future_parallel_resume.py::test_process_death_releases_claim"
+    ],
+    "reason": "Exact pinned old results and dtypes for binary/continuous, missing marker/covariates, duplicate ECGs and split-specific deterministic indexing. Stream a shared development-only projection with collision-proof marker aliases; prepare the unchanged patient selection once per packet/split. Same model operations, robust HC3, model family, thresholds and final full-family FDR. Exclusive OS-released packet locks, durable validated checkpoints, interruption and helper reuse before model queries. Default unprepared fitter unchanged. Release dead discovery intermediates and preserve screening/adjustment checkpoints after completion."
+  },
+  {
+    "module": "broad_axis_stage.py",
+    "from_sha256": "9d69cc175a201093009ba1859a3babc7e79fdb59525d1f6bdf606fb2167dfbb7",
+    "to_sha256": "3c3d5a425ae7f3aa267834f7e64712544f9dcf8e2b80145b37eba0f234d6be64",
+    "tests": [
+      "vcg_biomarker/tests/test_broad_adjustment_packets.py::test_prepared_fits_exactly_match_pinned_source",
+      "vcg_biomarker/tests/test_broad_adjustment_packets.py::test_actual_packet_resume_preserves_results_and_skips_saved_queries",
+      "vcg_biomarker/tests/test_future_parallel_resume.py::test_two_processes_compute_one_chunk_and_reuse_it",
+      "vcg_biomarker/tests/test_future_parallel_resume.py::test_process_death_releases_claim",
+      "vcg_biomarker/tests/test_broad_nullable_encoding.py::test_prepared_nullable_matches_original_numeric_boundary_and_default_unchanged",
+      "vcg_biomarker/tests/test_broad_nullable_encoding.py::test_only_dtype_failures_recomputed_and_valid_results_preserved"
+    ],
+    "reason": "Default unprepared consumers and all previously valid numeric results remain exactly unchanged. Prepared broad-axis fits pass the identical already-checked numeric design values to statsmodels as numpy float64, correcting its interface rejection of nullable pandas Float64; exact reference is the pinned original computation with only this numerical boundary normalized. Legacy erroneous fit_failed:ValueError artifacts are preserved as diagnostics, not asserted equivalent to corrected estimates. New numpy-design-v1 namespace prevents their reuse as completed confirmation. Previously valid estimable and genuine abstention rows are reused exactly without repeating their model calls. Same cohort, estimand, model families, solver, HC3, thresholds and complete-family FDR. Warm main and helpers reuse certified shared projection schema/index; original screening blocks and all saved files remain immutable."
+  },
+  {
+    "module": "broad_axis_adjustment.py",
+    "from_sha256": "f9f9ac0348b52202a8622767841263d98888584bfd8da5285c84c14715d353e6",
+    "to_sha256": "4d8550deb35d8e3cb9a95cedf80fc6ca0730e5a251f219e1f7a180dbc929d161",
+    "tests": [
+      "vcg_biomarker/tests/test_broad_adjustment_packets.py::test_prepared_fits_exactly_match_pinned_source",
+      "vcg_biomarker/tests/test_broad_adjustment_packets.py::test_actual_packet_resume_preserves_results_and_skips_saved_queries",
+      "vcg_biomarker/tests/test_future_parallel_resume.py::test_two_processes_compute_one_chunk_and_reuse_it",
+      "vcg_biomarker/tests/test_future_parallel_resume.py::test_process_death_releases_claim",
+      "vcg_biomarker/tests/test_broad_nullable_encoding.py::test_prepared_nullable_matches_original_numeric_boundary_and_default_unchanged",
+      "vcg_biomarker/tests/test_broad_nullable_encoding.py::test_only_dtype_failures_recomputed_and_valid_results_preserved"
+    ],
+    "reason": "Default unprepared consumers and all previously valid numeric results remain exactly unchanged. Prepared broad-axis fits pass the identical already-checked numeric design values to statsmodels as numpy float64, correcting its interface rejection of nullable pandas Float64; exact reference is the pinned original computation with only this numerical boundary normalized. Legacy erroneous fit_failed:ValueError artifacts are preserved as diagnostics, not asserted equivalent to corrected estimates. New numpy-design-v1 namespace prevents their reuse as completed confirmation. Previously valid estimable and genuine abstention rows are reused exactly without repeating their model calls. Same cohort, estimand, model families, solver, HC3, thresholds and complete-family FDR. Warm main and helpers reuse certified shared projection schema/index; original screening blocks and all saved files remain immutable."
+  },
+  {
+    "module": "broad_axis_stage.py",
+    "from_sha256": "9d69cc175a201093009ba1859a3babc7e79fdb59525d1f6bdf606fb2167dfbb7",
+    "to_sha256": "e46079c9e658ae75f82d5ce85e16efae553c0c4e1d54c93fb0752620216911cd",
+    "tests": [
+      "vcg_biomarker/tests/test_broad_adjustment_packets.py::test_prepared_fits_exactly_match_pinned_source",
+      "vcg_biomarker/tests/test_broad_adjustment_packets.py::test_actual_packet_resume_preserves_results_and_skips_saved_queries",
+      "vcg_biomarker/tests/test_future_parallel_resume.py::test_two_processes_compute_one_chunk_and_reuse_it",
+      "vcg_biomarker/tests/test_future_parallel_resume.py::test_process_death_releases_claim",
+      "vcg_biomarker/tests/test_broad_nullable_encoding.py::test_prepared_nullable_matches_original_numeric_boundary_and_default_unchanged",
+      "vcg_biomarker/tests/test_broad_nullable_encoding.py::test_only_dtype_failures_recomputed_and_valid_results_preserved"
+    ],
+    "reason": "Default unprepared consumers and all previously valid numeric results remain exactly unchanged. Prepared broad-axis fits pass the identical already-checked numeric design values to statsmodels as numpy float64, correcting its interface rejection of nullable pandas Float64; exact reference is the pinned original computation with only this numerical boundary normalized. Legacy erroneous fit_failed:ValueError artifacts are preserved as diagnostics, not asserted equivalent to corrected estimates. New numpy-design-v1 namespace prevents their reuse as completed confirmation. Previously valid estimable and genuine abstention rows are reused exactly without repeating their model calls. Same cohort, estimand, model families, solver, HC3, thresholds and complete-family FDR. Warm main and helpers reuse certified shared projection schema/index; original screening blocks and all saved files remain immutable."
+  }
+]

@@ -1,0 +1,11 @@
+{
+  "mapping_system": "AHRQ CCSR for ICD-10-CM Diagnoses",
+  "version": "2026.1",
+  "source": "https://hcup-us.ahrq.gov/toolssoftware/ccsr/DXCCSR-v2026-1.zip",
+  "retrieved_at": "2026-07-26",
+  "files": {
+    "DXCCSR-v2026-1/DXCCSR_v2026-1.csv": "87952ba68f625e16e7d7f5c6ba89419ef9e392717913c29b70624b752d653e2e"
+  },
+  "citation": "Clinical Classifications Software Refined (CCSR), Healthcare Cost and Utilization Project, Agency for Healthcare Research and Quality.",
+  "notes": "Pinned local audit hierarchy for ICD-10-CM diagnoses. PhecodeX remains the primary discovery mapping."
+}

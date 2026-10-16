@@ -1,0 +1,51 @@
+{
+  "registry": "VCG Feature Scanner scientific methodology source lock",
+  "version": "2026-07-27.1",
+  "retrieved_at": "2026-07-27",
+  "runtime_network_access": false,
+  "sources": [
+    {
+      "source_id": "aha_biomarker_utility_2026",
+      "title": "Criteria to Assess the Predictive and Clinical Utility of Novel Models, Biomarkers, and Tools for Risk of Cardiovascular Disease",
+      "version": "2026 AHA Scientific Statement",
+      "doi": "10.1161/CIR.0000000000001401",
+      "url": "https://professional.heart.org/en/science-news/criteria-to-assess-the-predictive-and-clinical-utility-of-cardiovascular-disease/top-things-to-know",
+      "implementation_scope": "Discrimination, incremental performance, reproducibility, clinical utility, subgroup generalizability, equity and cost-value interpretation",
+      "platform_safeguards": [
+        "VCG is compared with established ECG baselines on the same assessable cohort",
+        "incremental claims require paired validation evidence",
+        "clinical utility plots require validated calibrated probability models",
+        "subgroup and stability audits are reported separately"
+      ]
+    },
+    {
+      "source_id": "tripod_ai_2024",
+      "title": "TRIPOD+AI statement: updated guidance for reporting clinical prediction models that use regression or machine learning methods",
+      "version": "2024",
+      "doi": "10.1136/bmj-2023-078378",
+      "url": "https://www.tripod-statement.org/",
+      "implementation_scope": "Transparent reporting of development and evaluation data, outcomes, predictors, missing data, performance, subgroups, open science and limitations",
+      "platform_safeguards": [
+        "development, validation and locked test are named unambiguously",
+        "subject-level splitting and missingness are explicit",
+        "all manifests pin data, code, rules, panels and package versions",
+        "reports distinguish marker association from probability-model evaluation"
+      ]
+    },
+    {
+      "source_id": "probast_ai_2025",
+      "title": "PROBAST+AI: an updated quality, risk of bias, and applicability assessment tool for prediction models using regression or artificial intelligence methods",
+      "version": "2025",
+      "doi": "10.1136/bmj-2024-082505",
+      "url": "https://www.bmj.com/content/388/bmj-2024-082505",
+      "implementation_scope": "Risk-of-bias and applicability audit across participants, predictors, outcomes and analysis",
+      "platform_safeguards": [
+        "future information is excluded from predictive inputs",
+        "thresholds, directions and scaling are learned on train only",
+        "validation is a single selection gate and locked test remains sealed",
+        "event-per-parameter, calibration, missingness and overfitting rules are enforced"
+      ]
+    }
+  ],
+  "notes": "Bibliographic metadata and implementation safeguards only. Any edit changes the SHA-256 included in validation and freeze provenance."
+}

@@ -1,0 +1,93 @@
+{
+ "a_native": [
+  "a_measurement_audit/delineator_input_check"
+ ],
+ "a_testreplikation": [
+  "a_measurement_audit/test_partition_replication"
+ ],
+ "audit_tools": [
+  "s5_time_alignment/landmark_selection"
+ ],
+ "aw238": [
+  "a_measurement_audit/error_variance_stages",
+  "b_qrs_t_coupling/solver_stage",
+  "s5_time_alignment/wave0_checks"
+ ],
+ "aw240": [
+  "a_measurement_audit/recomputation_wave1"
+ ],
+ "aw241": [
+  "b_qrs_t_coupling/recomputation_wave1"
+ ],
+ "aw242": [
+  "s5_time_alignment/wave1_alignment"
+ ],
+ "aw243": [
+  "s5_time_alignment/wave1_addendum"
+ ],
+ "aw244": [
+  "a_measurement_audit/recomputation_wave2",
+  "b_qrs_t_coupling/recomputation_wave2"
+ ],
+ "aw245": [
+  "s5_time_alignment/wave2_individual_support"
+ ],
+ "aw248": [
+  "a_measurement_audit/circular_marker_check"
+ ],
+ "b_stoertest": [
+  "b_qrs_t_coupling/perturbation_tests"
+ ],
+ "b_test": [
+  "b_qrs_t_coupling/test_runner"
+ ],
+ "b_vorbereitung": [
+  "b_qrs_t_coupling/preparation"
+ ],
+ "benchmark": [
+  "pub12_program_comparison/benchmark"
+ ],
+ "messaudit": [
+  "a_measurement_audit/measurement_audit"
+ ],
+ "nachrechnung": [
+  "shared_support/replication_support"
+ ],
+ "pub01": [
+  "a_measurement_audit/supplementary_checks"
+ ],
+ "pub12": [
+  "pub12_program_comparison/thresholds_and_definitions"
+ ],
+ "pub12/aw231": [
+  "pub12_program_comparison/definition_audit_extras"
+ ],
+ "pub12/aw239": [
+  "pub12_program_comparison/wave1_program_checks"
+ ],
+ "pub12/aw245": [
+  "pub12_program_comparison/wave2_repeat_pairs"
+ ],
+ "pub12/aw247": [
+  "pub12_program_comparison/single_pair_export"
+ ],
+ "rv_a1": [
+  "a_measurement_audit/repeatability"
+ ],
+ "s5": [
+  "s5_time_alignment/earlier_analyses"
+ ],
+ "s5_mcmed": [
+  "s5_time_alignment/ed_waveform_validation"
+ ],
+ "tests": [
+  "shared_support/tests"
+ ],
+ "transform_katalog": [
+  "shared_support/transform_katalog"
+ ],
+ "varianten": [
+  "a_measurement_audit/matrix_variants",
+  "b_qrs_t_coupling/curve_variants"
+ ]
+}

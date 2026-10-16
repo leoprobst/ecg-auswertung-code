@@ -1,0 +1,642 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:vcg-biomarker:clinical-utility-assessment:2.0.0",
+  "title": "VCG biomarker clinical-utility assessment v2",
+  "description": "Strict assessment of verified aggregate evidence metadata. Referenced artifacts are not dereferenced and patient-level or locked-test evidence is inadmissible.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version", "assessment_id", "candidate_id", "created_at",
+    "claim_level", "claim_rank", "claim_text_de",
+    "clinical_utility_demonstrated", "clinical_utility_claim_allowed",
+    "decision_process_utility_demonstrated", "patient_benefit_demonstrated",
+    "patient_benefit_claim_allowed", "clinical_use_authorized",
+    "regulatory_authorization_assessed", "assessment_scope", "framework_scope",
+    "aha_2026_direct_scope", "aha_2026_metric_completeness",
+    "aha_2026_direct_compliance_claim_allowed",
+    "aha_2026_framework_alignment_supported", "locked_test_access_status",
+    "locked_test_data_read", "locked_test_outcomes_read", "dossier_hash",
+    "evidence_registry_id", "evidence_registry_sha256", "evidence_registry",
+    "next_claim_level", "blocking_gates_for_demonstrated_utility",
+    "blocking_gates_for_patient_benefit", "gates", "evidence_dossier",
+    "resolved_evidence_records", "authoritative_sources", "limitations"
+  ],
+  "properties": {
+    "schema_version": {"const": "2.0.0"},
+    "assessment_id": {"$ref": "#/$defs/nonEmptyString"},
+    "candidate_id": {"$ref": "#/$defs/nonEmptyString"},
+    "created_at": {"type": "string", "format": "date-time"},
+    "claim_level": {"$ref": "#/$defs/claimLevel"},
+    "claim_rank": {"type": "integer", "minimum": 0, "maximum": 7},
+    "claim_text_de": {"$ref": "#/$defs/nonEmptyString"},
+    "clinical_utility_demonstrated": {"type": "boolean"},
+    "clinical_utility_claim_allowed": {"type": "boolean"},
+    "decision_process_utility_demonstrated": {"type": "boolean"},
+    "patient_benefit_demonstrated": {"type": "boolean"},
+    "patient_benefit_claim_allowed": {"type": "boolean"},
+    "clinical_use_authorized": {"const": false},
+    "regulatory_authorization_assessed": {"const": false},
+    "assessment_scope": {"const": "verified_declarative_evidence_metadata_only"},
+    "framework_scope": {"$ref": "#/$defs/frameworkScope"},
+    "aha_2026_direct_scope": {"type": "boolean"},
+    "aha_2026_metric_completeness": {"type": ["boolean", "null"]},
+    "aha_2026_direct_compliance_claim_allowed": {"const": false},
+    "aha_2026_framework_alignment_supported": {"type": "boolean"},
+    "locked_test_access_status": {"enum": ["attested_unread", "not_attested"]},
+    "locked_test_data_read": {"type": ["boolean", "null"]},
+    "locked_test_outcomes_read": {"type": ["boolean", "null"]},
+    "dossier_hash": {"$ref": "#/$defs/sha256"},
+    "evidence_registry_id": {"$ref": "#/$defs/nonEmptyString"},
+    "evidence_registry_sha256": {"$ref": "#/$defs/sha256"},
+    "evidence_registry": {"$ref": "#/$defs/evidenceRegistry"},
+    "next_claim_level": {
+      "oneOf": [{"$ref": "#/$defs/claimLevel"}, {"type": "null"}]
+    },
+    "blocking_gates_for_demonstrated_utility": {"$ref": "#/$defs/gateIdArray"},
+    "blocking_gates_for_patient_benefit": {"$ref": "#/$defs/gateIdArray"},
+    "gates": {
+      "type": "array", "minItems": 18, "maxItems": 18,
+      "items": {"$ref": "#/$defs/gate"}
+    },
+    "evidence_dossier": {"$ref": "#/$defs/evidenceDossier"},
+    "resolved_evidence_records": {
+      "type": "array", "items": {"$ref": "#/$defs/evidenceRecord"},
+      "uniqueItems": true
+    },
+    "authoritative_sources": {
+      "type": "array", "minItems": 5,
+      "items": {"$ref": "#/$defs/source"}, "uniqueItems": true
+    },
+    "limitations": {
+      "type": "array", "minItems": 1,
+      "items": {"$ref": "#/$defs/nonEmptyString"}, "uniqueItems": true
+    }
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"framework_scope": {"const": "aha_incident_cvd_risk"}}, "required": ["framework_scope"]},
+      "then": {
+        "properties": {
+          "aha_2026_direct_scope": {"const": true},
+          "aha_2026_metric_completeness": {"type": "boolean"},
+          "evidence_dossier": {
+            "allOf": [
+              {"$ref": "#/$defs/evidenceDossier"},
+              {"properties": {
+                "framework_scope": {"const": "aha_incident_cvd_risk"},
+                "intended_use": {
+                  "properties": {
+                    "evaluation_family": {"const": "prediction_model"},
+                    "clinical_task": {"enum": ["prognosis", "risk_stratification"]}
+                  }
+                }
+              }}
+            ]
+          }
+        }
+      },
+      "else": {
+        "properties": {
+          "aha_2026_direct_scope": {"const": false},
+          "aha_2026_metric_completeness": {"type": "null"},
+          "aha_2026_framework_alignment_supported": {"const": false},
+          "evidence_dossier": {
+            "allOf": [
+              {"$ref": "#/$defs/evidenceDossier"},
+              {"properties": {
+                "framework_scope": {"const": "diagnostic_adaptation"},
+                "intended_use": {"properties": {"evaluation_family": {"const": "diagnostic_accuracy"}}}
+              }}
+            ]
+          }
+        }
+      }
+    },
+    {
+      "if": {"properties": {"claim_level": {"enum": ["decision_process_utility_demonstrated", "patient_benefit_demonstrated"]}}, "required": ["claim_level"]},
+      "then": {"properties": {
+        "clinical_utility_demonstrated": {"const": true},
+        "clinical_utility_claim_allowed": {"const": true},
+        "decision_process_utility_demonstrated": {"const": true}
+      }},
+      "else": {"properties": {
+        "clinical_utility_demonstrated": {"const": false},
+        "clinical_utility_claim_allowed": {"const": false},
+        "decision_process_utility_demonstrated": {"const": false}
+      }}
+    },
+    {
+      "if": {"properties": {"claim_level": {"const": "patient_benefit_demonstrated"}}, "required": ["claim_level"]},
+      "then": {"properties": {
+        "patient_benefit_demonstrated": {"const": true},
+        "patient_benefit_claim_allowed": {"const": true}
+      }},
+      "else": {"properties": {
+        "patient_benefit_demonstrated": {"const": false},
+        "patient_benefit_claim_allowed": {"const": false}
+      }}
+    },
+    {
+      "if": {"properties": {"locked_test_access_status": {"const": "attested_unread"}}, "required": ["locked_test_access_status"]},
+      "then": {"properties": {
+        "locked_test_data_read": {"const": false},
+        "locked_test_outcomes_read": {"const": false}
+      }},
+      "else": {"properties": {
+        "locked_test_data_read": {"type": "null"},
+        "locked_test_outcomes_read": {"type": "null"}
+      }}
+    },
+    {
+      "if": {"properties": {
+        "framework_scope": {"const": "aha_incident_cvd_risk"},
+        "aha_2026_metric_completeness": {"const": true},
+        "claim_level": {"enum": ["potential_clinical_utility", "decision_process_utility_demonstrated", "patient_benefit_demonstrated"]}
+      }, "required": ["framework_scope", "aha_2026_metric_completeness", "claim_level"]},
+      "then": {"properties": {"aha_2026_framework_alignment_supported": {"const": true}}},
+      "else": {"properties": {"aha_2026_framework_alignment_supported": {"const": false}}}
+    }
+  ],
+  "$defs": {
+    "nonEmptyString": {"type": "string", "minLength": 1, "pattern": ".*\\S.*"},
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "stringArray": {
+      "type": "array", "items": {"$ref": "#/$defs/nonEmptyString"}, "uniqueItems": true
+    },
+    "evidenceIds": {
+      "type": "array", "items": {"$ref": "#/$defs/nonEmptyString"}, "uniqueItems": true
+    },
+    "frameworkScope": {"enum": ["aha_incident_cvd_risk", "diagnostic_adaptation"]},
+    "claimLevel": {
+      "enum": [
+        "hypothesis_only", "analytical_validity_supported",
+        "clinical_association_supported", "internal_validation_supported",
+        "external_validation_supported", "potential_clinical_utility",
+        "decision_process_utility_demonstrated", "patient_benefit_demonstrated"
+      ]
+    },
+    "evidenceStatus": {
+      "enum": ["not_assessed", "planned", "in_progress", "supported", "failed", "not_applicable"]
+    },
+    "gateId": {
+      "enum": [
+        "framework_scope_valid", "scope_freeze_attested",
+        "aha_2026_metric_completeness", "intended_use_frozen",
+        "analytical_validity", "clinical_association_validity",
+        "internal_validation", "external_validation", "calibration",
+        "reporting_and_risk_of_bias", "standard_care_comparator",
+        "incremental_value", "decision_curve_net_benefit",
+        "reclassification_interpretable_or_not_used",
+        "feasibility_and_actionability", "subgroups_and_generalizability",
+        "prospective_decision_process_impact", "prospective_patient_benefit"
+      ]
+    },
+    "gateIdArray": {
+      "type": "array", "items": {"$ref": "#/$defs/gateId"}, "uniqueItems": true
+    },
+    "source": {
+      "type": "object", "additionalProperties": false,
+      "required": ["source_id", "title", "organization", "year", "url", "role"],
+      "properties": {
+        "source_id": {"$ref": "#/$defs/nonEmptyString"},
+        "title": {"$ref": "#/$defs/nonEmptyString"},
+        "organization": {"$ref": "#/$defs/nonEmptyString"},
+        "year": {"type": "integer", "minimum": 2000},
+        "url": {"type": "string", "format": "uri"},
+        "role": {"$ref": "#/$defs/nonEmptyString"}
+      }
+    },
+    "gate": {
+      "type": "object", "additionalProperties": false,
+      "required": ["gate_id", "domain", "passed", "status", "missing_requirements", "evidence_ids", "source_ids", "rationale"],
+      "properties": {
+        "gate_id": {"$ref": "#/$defs/gateId"},
+        "domain": {"$ref": "#/$defs/nonEmptyString"},
+        "passed": {"type": "boolean"},
+        "status": {"enum": ["pass", "fail"]},
+        "missing_requirements": {"$ref": "#/$defs/stringArray"},
+        "evidence_ids": {"$ref": "#/$defs/evidenceIds"},
+        "source_ids": {"$ref": "#/$defs/stringArray"},
+        "rationale": {"$ref": "#/$defs/nonEmptyString"}
+      },
+      "allOf": [{
+        "if": {"properties": {"passed": {"const": true}}, "required": ["passed"]},
+        "then": {"properties": {"status": {"const": "pass"}, "missing_requirements": {"maxItems": 0}}},
+        "else": {"properties": {"status": {"const": "fail"}, "missing_requirements": {"minItems": 1}}}
+      }]
+    },
+    "evidenceRecord": {
+      "type": "object", "additionalProperties": false,
+      "required": [
+        "evidence_id", "evidence_kind", "artifact_uri", "artifact_sha256",
+        "manifest_id", "manifest_uri", "manifest_sha256", "dataset_id",
+        "site_id", "split", "assessor_id", "assessor_organization",
+        "assessed_at", "domains", "independent_from_development",
+        "contains_patient_level_data", "contains_locked_test_data",
+        "contains_locked_test_outcomes", "record_sha256"
+      ],
+      "properties": {
+        "evidence_id": {"$ref": "#/$defs/nonEmptyString"},
+        "evidence_kind": {"$ref": "#/$defs/nonEmptyString"},
+        "artifact_uri": {"type": "string", "pattern": "^(urn:|evidence:|https://)"},
+        "artifact_sha256": {"$ref": "#/$defs/sha256"},
+        "manifest_id": {"$ref": "#/$defs/nonEmptyString"},
+        "manifest_uri": {"type": "string", "pattern": "^(urn:|evidence:|https://)"},
+        "manifest_sha256": {"$ref": "#/$defs/sha256"},
+        "dataset_id": {"$ref": "#/$defs/nonEmptyString"},
+        "site_id": {"$ref": "#/$defs/nonEmptyString"},
+        "split": {"$ref": "#/$defs/nonEmptyString"},
+        "assessor_id": {"$ref": "#/$defs/nonEmptyString"},
+        "assessor_organization": {"$ref": "#/$defs/nonEmptyString"},
+        "assessed_at": {"type": "string", "format": "date-time"},
+        "domains": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/nonEmptyString"}, "uniqueItems": true},
+        "independent_from_development": {"type": "boolean"},
+        "contains_patient_level_data": {"const": false},
+        "contains_locked_test_data": {"const": false},
+        "contains_locked_test_outcomes": {"const": false},
+        "record_sha256": {"$ref": "#/$defs/sha256"}
+      }
+    },
+    "evidenceRegistry": {
+      "type": "object", "additionalProperties": false,
+      "required": ["registry_id", "development_site_id", "created_at", "created_by", "records", "registry_sha256"],
+      "properties": {
+        "registry_id": {"$ref": "#/$defs/nonEmptyString"},
+        "development_site_id": {"$ref": "#/$defs/nonEmptyString"},
+        "created_at": {"type": "string", "format": "date-time"},
+        "created_by": {"$ref": "#/$defs/nonEmptyString"},
+        "records": {"type": "array", "items": {"$ref": "#/$defs/evidenceRecord"}, "uniqueItems": true},
+        "registry_sha256": {"$ref": "#/$defs/sha256"}
+      }
+    },
+    "scopeFreezeAttestation": {
+      "type": "object", "additionalProperties": false,
+      "required": [
+        "attestation_id", "candidate_id", "use_id", "intended_use_sha256",
+        "comparator_sha256", "thresholds_sha256", "evidence_registry_sha256",
+        "custody_evidence_id", "custody_manifest_sha256", "attested_by",
+        "attested_at", "frozen_before_evaluation",
+        "locked_test_data_attested_unread", "locked_test_outcomes_attested_unread",
+        "attestation_sha256"
+      ],
+      "properties": {
+        "attestation_id": {"$ref": "#/$defs/nonEmptyString"},
+        "candidate_id": {"$ref": "#/$defs/nonEmptyString"},
+        "use_id": {"$ref": "#/$defs/nonEmptyString"},
+        "intended_use_sha256": {"$ref": "#/$defs/sha256"},
+        "comparator_sha256": {"$ref": "#/$defs/sha256"},
+        "thresholds_sha256": {"$ref": "#/$defs/sha256"},
+        "evidence_registry_sha256": {"$ref": "#/$defs/sha256"},
+        "custody_evidence_id": {"$ref": "#/$defs/nonEmptyString"},
+        "custody_manifest_sha256": {"$ref": "#/$defs/sha256"},
+        "attested_by": {"$ref": "#/$defs/nonEmptyString"},
+        "attested_at": {"type": "string", "format": "date-time"},
+        "frozen_before_evaluation": {"type": "boolean"},
+        "locked_test_data_attested_unread": {"type": "boolean"},
+        "locked_test_outcomes_attested_unread": {"type": "boolean"},
+        "attestation_sha256": {"$ref": "#/$defs/sha256"}
+      }
+    },
+    "ahaMetricRecord": {
+      "type": "object", "additionalProperties": false,
+      "required": [
+        "metric_id", "status", "estimate", "unit", "confidence_interval_low",
+        "confidence_interval_high", "uncertainty_reported", "population",
+        "time_horizon", "comparator_id", "threshold_definition",
+        "external_validation", "prespecified", "interpretation", "evidence_ids"
+      ],
+      "properties": {
+        "metric_id": {"enum": [
+          "association_rr_per_sd", "association_categorical_rr",
+          "measurement_coefficient_of_variation", "discrimination_c_statistic",
+          "calibration_in_the_large", "calibration_slope",
+          "calibration_sociodemographic_subgroups", "incremental_delta_c_statistic",
+          "incremental_delta_calibration", "categorical_nri", "external_validation",
+          "decision_curve", "cost_effectiveness", "actionability"
+        ]},
+        "status": {"$ref": "#/$defs/evidenceStatus"},
+        "estimate": {"type": ["number", "null"]},
+        "unit": {"$ref": "#/$defs/nonEmptyString"},
+        "confidence_interval_low": {"type": ["number", "null"]},
+        "confidence_interval_high": {"type": ["number", "null"]},
+        "uncertainty_reported": {"type": "boolean"},
+        "population": {"$ref": "#/$defs/nonEmptyString"},
+        "time_horizon": {"$ref": "#/$defs/nonEmptyString"},
+        "comparator_id": {"type": "string"},
+        "threshold_definition": {"type": "string"},
+        "external_validation": {"type": "boolean"},
+        "prespecified": {"type": "boolean"},
+        "interpretation": {"$ref": "#/$defs/nonEmptyString"},
+        "evidence_ids": {"$ref": "#/$defs/evidenceIds"}
+      },
+      "allOf": [{
+        "if": {"properties": {"metric_id": {"enum": [
+          "association_rr_per_sd", "association_categorical_rr",
+          "measurement_coefficient_of_variation", "discrimination_c_statistic",
+          "calibration_in_the_large", "calibration_slope",
+          "incremental_delta_c_statistic", "incremental_delta_calibration",
+          "categorical_nri"
+        ]}}, "required": ["metric_id"]},
+        "then": {"properties": {"estimate": {"type": "number"}}}
+      }]
+    },
+    "intendedUse": {
+      "type": "object", "additionalProperties": false,
+      "required": [
+        "use_id", "evaluation_family", "clinical_task", "target_population",
+        "care_setting", "intended_user", "workflow_position", "index_test",
+        "target_condition_or_outcome", "reference_standard", "clinical_decision",
+        "action_if_positive", "action_if_negative", "unit_of_analysis",
+        "time_horizon", "outputs_absolute_risk", "clinically_actionable_thresholds",
+        "anticipated_benefits", "anticipated_harms", "exclusions",
+        "frozen_before_evaluation"
+      ],
+      "properties": {
+        "use_id": {"$ref": "#/$defs/nonEmptyString"},
+        "evaluation_family": {"enum": ["diagnostic_accuracy", "prediction_model"]},
+        "clinical_task": {"enum": ["diagnosis", "screening", "triage", "prognosis", "risk_stratification", "treatment_selection", "monitoring"]},
+        "target_population": {"$ref": "#/$defs/nonEmptyString"},
+        "care_setting": {"$ref": "#/$defs/nonEmptyString"},
+        "intended_user": {"$ref": "#/$defs/nonEmptyString"},
+        "workflow_position": {"$ref": "#/$defs/nonEmptyString"},
+        "index_test": {"$ref": "#/$defs/nonEmptyString"},
+        "target_condition_or_outcome": {"$ref": "#/$defs/nonEmptyString"},
+        "reference_standard": {"$ref": "#/$defs/nonEmptyString"},
+        "clinical_decision": {"$ref": "#/$defs/nonEmptyString"},
+        "action_if_positive": {"$ref": "#/$defs/nonEmptyString"},
+        "action_if_negative": {"$ref": "#/$defs/nonEmptyString"},
+        "unit_of_analysis": {"$ref": "#/$defs/nonEmptyString"},
+        "time_horizon": {"type": "string"},
+        "outputs_absolute_risk": {"type": "boolean"},
+        "clinically_actionable_thresholds": {
+          "type": "array", "items": {"type": "number", "exclusiveMinimum": 0, "exclusiveMaximum": 1}, "uniqueItems": true
+        },
+        "anticipated_benefits": {"$ref": "#/$defs/stringArray"},
+        "anticipated_harms": {"$ref": "#/$defs/stringArray"},
+        "exclusions": {"$ref": "#/$defs/stringArray"},
+        "frozen_before_evaluation": {"type": "boolean"}
+      },
+      "allOf": [{
+        "if": {"properties": {"evaluation_family": {"const": "prediction_model"}}, "required": ["evaluation_family"]},
+        "then": {"properties": {"time_horizon": {"$ref": "#/$defs/nonEmptyString"}, "outputs_absolute_risk": {"const": true}}}
+      }]
+    },
+    "comparator": {
+      "type": "object", "additionalProperties": false,
+      "required": ["comparator_id", "description", "current_standard_of_care", "clinically_implemented", "frozen_before_comparison", "evaluated_head_to_head", "evaluated_in_same_participants", "includes_default_strategies", "evidence_ids"],
+      "properties": {
+        "comparator_id": {"$ref": "#/$defs/nonEmptyString"},
+        "description": {"$ref": "#/$defs/nonEmptyString"},
+        "current_standard_of_care": {"type": "boolean"},
+        "clinically_implemented": {"type": "boolean"},
+        "frozen_before_comparison": {"type": "boolean"},
+        "evaluated_head_to_head": {"type": "boolean"},
+        "evaluated_in_same_participants": {"type": "boolean"},
+        "includes_default_strategies": {"type": "boolean"},
+        "evidence_ids": {"$ref": "#/$defs/evidenceIds"}
+      }
+    },
+    "analyticalValidity": {
+      "type": "object", "additionalProperties": false,
+      "required": ["status", "measurement_procedure_frozen", "preanalytic_and_signal_requirements_prespecified", "repeatability_supported", "reproducibility_across_devices_or_software_supported", "failure_and_abstention_rates_reported", "quality_control_acceptance_criteria_met", "evidence_ids"],
+      "properties": {
+        "status": {"$ref": "#/$defs/evidenceStatus"},
+        "measurement_procedure_frozen": {"type": "boolean"},
+        "preanalytic_and_signal_requirements_prespecified": {"type": "boolean"},
+        "repeatability_supported": {"type": "boolean"},
+        "reproducibility_across_devices_or_software_supported": {"type": "boolean"},
+        "failure_and_abstention_rates_reported": {"type": "boolean"},
+        "quality_control_acceptance_criteria_met": {"type": "boolean"},
+        "evidence_ids": {"$ref": "#/$defs/evidenceIds"}
+      }
+    },
+    "clinicalAssociation": {
+      "type": "object", "additionalProperties": false,
+      "required": ["status", "analysis_prespecified", "reference_standard_appropriate", "reference_assessment_blinded_to_index_test", "incorporation_bias_absent", "temporal_alignment_appropriate", "uncertainty_reported", "evidence_ids"],
+      "properties": {
+        "status": {"$ref": "#/$defs/evidenceStatus"},
+        "analysis_prespecified": {"type": "boolean"},
+        "reference_standard_appropriate": {"type": "boolean"},
+        "reference_assessment_blinded_to_index_test": {"type": "boolean"},
+        "incorporation_bias_absent": {"type": "boolean"},
+        "temporal_alignment_appropriate": {"type": "boolean"},
+        "uncertainty_reported": {"type": "boolean"},
+        "evidence_ids": {"$ref": "#/$defs/evidenceIds"}
+      }
+    },
+    "internalValidation": {
+      "type": "object", "additionalProperties": false,
+      "required": ["status", "candidate_frozen_before_evaluation", "participant_level_separation", "target_population_represented", "sample_size_and_event_count_adequate", "missing_data_handled_appropriately", "discrimination_or_accuracy_reported", "threshold_performance_reported", "uncertainty_reported", "prespecified_acceptance_criteria_met", "evidence_ids"],
+      "properties": {
+        "status": {"$ref": "#/$defs/evidenceStatus"},
+        "candidate_frozen_before_evaluation": {"type": "boolean"},
+        "participant_level_separation": {"type": "boolean"},
+        "target_population_represented": {"type": "boolean"},
+        "sample_size_and_event_count_adequate": {"type": "boolean"},
+        "missing_data_handled_appropriately": {"type": "boolean"},
+        "discrimination_or_accuracy_reported": {"type": "boolean"},
+        "threshold_performance_reported": {"type": "boolean"},
+        "uncertainty_reported": {"type": "boolean"},
+        "prespecified_acceptance_criteria_met": {"type": "boolean"},
+        "evidence_ids": {"$ref": "#/$defs/evidenceIds"}
+      }
+    },
+    "externalValidation": {
+      "type": "object", "additionalProperties": false,
+      "required": ["status", "external_dataset_count", "distinct_institution_count", "independent_investigators", "candidate_applied_unchanged", "intended_use_matches", "target_population_represented", "sample_size_and_event_count_adequate", "discrimination_or_accuracy_reported", "threshold_performance_reported", "uncertainty_reported", "prespecified_acceptance_criteria_met", "evidence_ids"],
+      "properties": {
+        "status": {"$ref": "#/$defs/evidenceStatus"},
+        "external_dataset_count": {"type": "integer", "minimum": 0},
+        "distinct_institution_count": {"type": "integer", "minimum": 0},
+        "independent_investigators": {"type": "boolean"},
+        "candidate_applied_unchanged": {"type": "boolean"},
+        "intended_use_matches": {"type": "boolean"},
+        "target_population_represented": {"type": "boolean"},
+        "sample_size_and_event_count_adequate": {"type": "boolean"},
+        "discrimination_or_accuracy_reported": {"type": "boolean"},
+        "threshold_performance_reported": {"type": "boolean"},
+        "uncertainty_reported": {"type": "boolean"},
+        "prespecified_acceptance_criteria_met": {"type": "boolean"},
+        "evidence_ids": {"$ref": "#/$defs/evidenceIds"}
+      }
+    },
+    "calibration": {
+      "type": "object", "additionalProperties": false,
+      "required": ["status", "evaluated_in_external_validation", "calibration_plot_reported", "calibration_in_the_large_reported", "calibration_slope_reported", "calibration_across_relevant_range_reported", "subgroup_calibration_reported", "acceptance_criteria_prespecified", "acceptance_criteria_met", "evidence_ids"],
+      "properties": {
+        "status": {"$ref": "#/$defs/evidenceStatus"},
+        "evaluated_in_external_validation": {"type": "boolean"},
+        "calibration_plot_reported": {"type": "boolean"},
+        "calibration_in_the_large_reported": {"type": "boolean"},
+        "calibration_slope_reported": {"type": "boolean"},
+        "calibration_across_relevant_range_reported": {"type": "boolean"},
+        "subgroup_calibration_reported": {"type": "boolean"},
+        "acceptance_criteria_prespecified": {"type": "boolean"},
+        "acceptance_criteria_met": {"type": "boolean"},
+        "evidence_ids": {"$ref": "#/$defs/evidenceIds"}
+      }
+    },
+    "incrementalValue": {
+      "type": "object", "additionalProperties": false,
+      "required": ["status", "comparator_id", "comparison_design", "head_to_head_same_participants", "discrimination_or_accuracy_compared", "calibration_compared_when_applicable", "threshold_performance_compared", "uncertainty_reported", "minimum_clinically_meaningful_improvement_prespecified", "prespecified_minimum_met", "evidence_ids"],
+      "properties": {
+        "status": {"$ref": "#/$defs/evidenceStatus"},
+        "comparator_id": {"type": "string"},
+        "comparison_design": {"type": "string"},
+        "head_to_head_same_participants": {"type": "boolean"},
+        "discrimination_or_accuracy_compared": {"type": "boolean"},
+        "calibration_compared_when_applicable": {"type": "boolean"},
+        "threshold_performance_compared": {"type": "boolean"},
+        "uncertainty_reported": {"type": "boolean"},
+        "minimum_clinically_meaningful_improvement_prespecified": {"type": "boolean"},
+        "prespecified_minimum_met": {"type": "boolean"},
+        "evidence_ids": {"$ref": "#/$defs/evidenceIds"}
+      }
+    },
+    "decisionCurve": {
+      "type": "object", "additionalProperties": false,
+      "required": ["status", "thresholds_evaluated", "primary_threshold", "thresholds_prespecified", "thresholds_clinically_actionable", "evaluated_in_external_validation", "threshold_coverage_complete", "candidate_above_comparator_across_range", "candidate_above_default_strategies_across_range", "no_material_harm_across_range", "uncertainty_reported", "primary_threshold_delta_ci_positive", "minimum_net_benefit_margin", "minimum_margin_prespecified", "evidence_scope", "evidence_ids"],
+      "properties": {
+        "status": {"$ref": "#/$defs/evidenceStatus"},
+        "thresholds_evaluated": {"type": "array", "items": {"type": "number", "exclusiveMinimum": 0, "exclusiveMaximum": 1}, "uniqueItems": true},
+        "primary_threshold": {"oneOf": [{"type": "number", "exclusiveMinimum": 0, "exclusiveMaximum": 1}, {"type": "null"}]},
+        "thresholds_prespecified": {"type": "boolean"},
+        "thresholds_clinically_actionable": {"type": "boolean"},
+        "evaluated_in_external_validation": {"type": "boolean"},
+        "threshold_coverage_complete": {"type": "boolean"},
+        "candidate_above_comparator_across_range": {"type": "boolean"},
+        "candidate_above_default_strategies_across_range": {"type": "boolean"},
+        "no_material_harm_across_range": {"type": "boolean"},
+        "uncertainty_reported": {"type": "boolean"},
+        "primary_threshold_delta_ci_positive": {"type": "boolean"},
+        "minimum_net_benefit_margin": {"type": "number", "minimum": 0},
+        "minimum_margin_prespecified": {"type": "boolean"},
+        "evidence_scope": {"enum": ["not_assessed", "external_paired_prespecified_metadata"]},
+        "evidence_ids": {"$ref": "#/$defs/evidenceIds"}
+      }
+    },
+    "reclassification": {
+      "type": "object", "additionalProperties": false,
+      "required": ["performed", "method", "clinically_defined_categories", "categories_prespecified", "event_and_nonevent_reclassification_reported_separately", "uncertainty_reported", "changes_clinical_management", "evidence_ids"],
+      "properties": {
+        "performed": {"type": "boolean"},
+        "method": {"$ref": "#/$defs/nonEmptyString"},
+        "clinically_defined_categories": {"type": "boolean"},
+        "categories_prespecified": {"type": "boolean"},
+        "event_and_nonevent_reclassification_reported_separately": {"type": "boolean"},
+        "uncertainty_reported": {"type": "boolean"},
+        "changes_clinical_management": {"type": "boolean"},
+        "evidence_ids": {"$ref": "#/$defs/evidenceIds"}
+      }
+    },
+    "feasibilityActionability": {
+      "type": "object", "additionalProperties": false,
+      "required": ["status", "result_changes_a_clinical_decision", "resulting_action_supported_by_evidence", "workflow_and_turnaround_feasible", "failure_and_abstention_workflow_defined", "downstream_harms_assessed", "implementation_costs_and_resources_assessed", "stakeholder_acceptability_assessed", "scalability_assessed", "evidence_ids"],
+      "properties": {
+        "status": {"$ref": "#/$defs/evidenceStatus"},
+        "result_changes_a_clinical_decision": {"type": "boolean"},
+        "resulting_action_supported_by_evidence": {"type": "boolean"},
+        "workflow_and_turnaround_feasible": {"type": "boolean"},
+        "failure_and_abstention_workflow_defined": {"type": "boolean"},
+        "downstream_harms_assessed": {"type": "boolean"},
+        "implementation_costs_and_resources_assessed": {"type": "boolean"},
+        "stakeholder_acceptability_assessed": {"type": "boolean"},
+        "scalability_assessed": {"type": "boolean"},
+        "evidence_ids": {"$ref": "#/$defs/evidenceIds"}
+      }
+    },
+    "subgroupGeneralizability": {
+      "type": "object", "additionalProperties": false,
+      "required": ["status", "subgroups_prespecified", "clinically_relevant_subgroups_covered", "subgroup_sample_sizes_reported", "discrimination_or_accuracy_by_subgroup_reported", "calibration_by_subgroup_reported_when_applicable", "threshold_performance_by_subgroup_reported", "device_site_and_era_heterogeneity_assessed", "no_unacceptable_performance_or_harm_disparity", "equity_implications_assessed", "evidence_ids"],
+      "properties": {
+        "status": {"$ref": "#/$defs/evidenceStatus"},
+        "subgroups_prespecified": {"type": "boolean"},
+        "clinically_relevant_subgroups_covered": {"type": "boolean"},
+        "subgroup_sample_sizes_reported": {"type": "boolean"},
+        "discrimination_or_accuracy_by_subgroup_reported": {"type": "boolean"},
+        "calibration_by_subgroup_reported_when_applicable": {"type": "boolean"},
+        "threshold_performance_by_subgroup_reported": {"type": "boolean"},
+        "device_site_and_era_heterogeneity_assessed": {"type": "boolean"},
+        "no_unacceptable_performance_or_harm_disparity": {"type": "boolean"},
+        "equity_implications_assessed": {"type": "boolean"},
+        "evidence_ids": {"$ref": "#/$defs/evidenceIds"}
+      }
+    },
+    "reportingBias": {
+      "type": "object", "additionalProperties": false,
+      "required": ["status", "reporting_guideline", "reporting_checklist_complete", "risk_of_bias_tool", "low_risk_of_bias", "low_concern_for_applicability", "protocol_or_analysis_plan_public", "evidence_ids"],
+      "properties": {
+        "status": {"$ref": "#/$defs/evidenceStatus"},
+        "reporting_guideline": {"type": "string"},
+        "reporting_checklist_complete": {"type": "boolean"},
+        "risk_of_bias_tool": {"type": "string"},
+        "low_risk_of_bias": {"type": "boolean"},
+        "low_concern_for_applicability": {"type": "boolean"},
+        "protocol_or_analysis_plan_public": {"type": "boolean"},
+        "evidence_ids": {"$ref": "#/$defs/evidenceIds"}
+      }
+    },
+    "prospectiveImpact": {
+      "type": "object", "additionalProperties": false,
+      "required": ["status", "study_design", "prospectively_registered", "protocol_and_primary_outcome_prespecified", "candidate_frozen_before_enrolment", "concurrent_standard_care_comparator", "evaluated_in_intended_workflow", "clinically_meaningful_primary_outcome", "primary_outcome_type", "primary_outcome_improved", "uncertainty_reported", "harms_and_unintended_consequences_acceptable", "implementation_fidelity_reported", "sample_size_adequate", "low_risk_of_bias", "evidence_ids"],
+      "properties": {
+        "status": {"$ref": "#/$defs/evidenceStatus"},
+        "study_design": {"type": "string"},
+        "prospectively_registered": {"type": "boolean"},
+        "protocol_and_primary_outcome_prespecified": {"type": "boolean"},
+        "candidate_frozen_before_enrolment": {"type": "boolean"},
+        "concurrent_standard_care_comparator": {"type": "boolean"},
+        "evaluated_in_intended_workflow": {"type": "boolean"},
+        "clinically_meaningful_primary_outcome": {"type": "boolean"},
+        "primary_outcome_type": {"type": "string"},
+        "primary_outcome_improved": {"type": "boolean"},
+        "uncertainty_reported": {"type": "boolean"},
+        "harms_and_unintended_consequences_acceptable": {"type": "boolean"},
+        "implementation_fidelity_reported": {"type": "boolean"},
+        "sample_size_adequate": {"type": "boolean"},
+        "low_risk_of_bias": {"type": "boolean"},
+        "evidence_ids": {"$ref": "#/$defs/evidenceIds"}
+      }
+    },
+    "evidenceDossier": {
+      "type": "object", "additionalProperties": false,
+      "required": [
+        "assessment_id", "candidate_id", "framework_scope", "intended_use",
+        "comparator", "scope_freeze_attestation", "aha_metric_records",
+        "analytical_validity", "clinical_association", "internal_validation",
+        "external_validation", "calibration", "incremental_value",
+        "decision_curve", "reclassification", "feasibility_actionability",
+        "subgroup_generalizability", "reporting_and_bias", "prospective_impact"
+      ],
+      "properties": {
+        "assessment_id": {"$ref": "#/$defs/nonEmptyString"},
+        "candidate_id": {"$ref": "#/$defs/nonEmptyString"},
+        "framework_scope": {"$ref": "#/$defs/frameworkScope"},
+        "intended_use": {"$ref": "#/$defs/intendedUse"},
+        "comparator": {"$ref": "#/$defs/comparator"},
+        "scope_freeze_attestation": {"oneOf": [{"$ref": "#/$defs/scopeFreezeAttestation"}, {"type": "null"}]},
+        "aha_metric_records": {"type": "array", "maxItems": 14, "items": {"$ref": "#/$defs/ahaMetricRecord"}, "uniqueItems": true},
+        "analytical_validity": {"$ref": "#/$defs/analyticalValidity"},
+        "clinical_association": {"$ref": "#/$defs/clinicalAssociation"},
+        "internal_validation": {"$ref": "#/$defs/internalValidation"},
+        "external_validation": {"$ref": "#/$defs/externalValidation"},
+        "calibration": {"$ref": "#/$defs/calibration"},
+        "incremental_value": {"$ref": "#/$defs/incrementalValue"},
+        "decision_curve": {"$ref": "#/$defs/decisionCurve"},
+        "reclassification": {"$ref": "#/$defs/reclassification"},
+        "feasibility_actionability": {"$ref": "#/$defs/feasibilityActionability"},
+        "subgroup_generalizability": {"$ref": "#/$defs/subgroupGeneralizability"},
+        "reporting_and_bias": {"$ref": "#/$defs/reportingBias"},
+        "prospective_impact": {"$ref": "#/$defs/prospectiveImpact"}
+      },
+      "allOf": [{
+        "if": {"properties": {"framework_scope": {"const": "aha_incident_cvd_risk"}}, "required": ["framework_scope"]},
+        "then": {"properties": {"intended_use": {"properties": {
+          "evaluation_family": {"const": "prediction_model"},
+          "clinical_task": {"enum": ["prognosis", "risk_stratification"]}
+        }}}},
+        "else": {"properties": {"intended_use": {"properties": {"evaluation_family": {"const": "diagnostic_accuracy"}}}}}
+      }]
+    }
+  }
+}

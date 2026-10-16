@@ -1,0 +1,151 @@
+{
+  "registry": "VCG Feature Scanner classical ECG baseline source lock",
+  "version": "2026-09-21.1",
+  "retrieved_at": "2026-07-28",
+  "runtime_network_access": false,
+  "sources": [
+    {
+      "source_id": "dodd_modified_sgarbossa_pacing_2021",
+      "title": "Electrocardiographic Diagnosis of Acute Coronary Occlusion MI in Ventricular Paced Rhythm Using Modified Sgarbossa Criteria",
+      "version": "2021",
+      "doi": "10.1016/j.annemergmed.2021.03.036",
+      "urls": ["https://pubmed.ncbi.nlm.nih.gov/34172301/"],
+      "implementation_scope": "Standard modified components in confirmed ventricular paced morphology; no V4-V6 extension or locally validated probability"
+    },
+    {
+      "source_id": "smith_modified_sgarbossa_2012",
+      "title": "Diagnosis of STEMI in LBBB with the ST-elevation to S-wave ratio in a modified Sgarbossa rule",
+      "version": "2012",
+      "doi": "10.1016/j.annemergmed.2012.07.119",
+      "urls": ["https://pubmed.ncbi.nlm.nih.gov/22939607/"],
+      "implementation_scope": "LBBB morphology components; no independent validation claim for ventricular pacing"
+    },
+    {
+      "source_id": "udmi_fourth_2018",
+      "title": "Fourth Universal Definition of Myocardial Infarction (2018)",
+      "version": "2018; Table 3",
+      "doi": "10.1016/j.jacc.2018.08.1038",
+      "urls": ["https://www.jacc.org/doi/10.1016/j.jacc.2018.08.1038"],
+      "implementation_scope": "Q-wave component only; not a complete prior-MI diagnosis. QS, posterior R equivalents and clinical confounders require separate assessment."
+    },
+    {
+      "source_id": "aha_ecg_part_i_2007",
+      "title": "AHA/ACCF/HRS Recommendations for the Standardization and Interpretation of the Electrocardiogram, Part I",
+      "version": "2007",
+      "doi": "10.1161/CIRCULATIONAHA.106.180200",
+      "urls": [
+        "https://www.ahajournals.org/doi/10.1161/CIRCULATIONAHA.106.180200",
+        "https://www.ahajournals.org/toc/circ/119/10"
+      ],
+      "implementation_scope": "ECG acquisition, technology and general interpretation provenance"
+    },
+    {
+      "source_id": "aha_ecg_part_iv_2009",
+      "title": "AHA/ACCF/HRS ECG Standardization, Part IV: ST Segment, T and U Waves, and QT Interval",
+      "version": "2009",
+      "doi": "10.1161/CIRCULATIONAHA.108.191096",
+      "urls": [
+        "https://www.ahajournals.org/doi/10.1161/CIRCULATIONAHA.108.191096"
+      ],
+      "implementation_scope": "QT, JT and repolarization comparators"
+    },
+    {
+      "source_id": "aha_ecg_part_v_2009",
+      "title": "AHA/ACCF/HRS ECG Standardization, Part V: Cardiac Chamber Hypertrophy",
+      "version": "2009",
+      "doi": "10.1161/CIRCULATIONAHA.108.191097",
+      "urls": [
+        "https://www.ahajournals.org/doi/10.1161/CIRCULATIONAHA.108.191097"
+      ],
+      "implementation_scope": "LVH, RVH and atrial enlargement ECG comparators"
+    },
+    {
+      "source_id": "aha_ecg_part_vi_2009",
+      "title": "AHA/ACCF/HRS ECG Standardization, Part VI: Acute Ischemia/Infarction",
+      "version": "2009",
+      "doi": "10.1161/CIRCULATIONAHA.108.191098",
+      "urls": [
+        "https://www.ahajournals.org/doi/10.1161/CIRCULATIONAHA.108.191098"
+      ],
+      "implementation_scope": "ST, T-wave, Q-wave and infarction-pattern comparators"
+    },
+    {
+      "source_id": "acc_aha_acs_2025",
+      "title": "2025 ACC/AHA/ACEP/NAEMSP/SCAI Guideline for Acute Coronary Syndromes",
+      "version": "2025",
+      "urls": [
+        "https://www.acc.org/Guidelines/Guidelines/2025/02/27/17/21/Acute-Coronary-Syndromes-2025"
+      ],
+      "implementation_scope": "Clinical ACS context; not used as an ECG-label gold standard"
+    },
+    {
+      "source_id": "esc_af_2024",
+      "title": "2024 ESC Guidelines for the management of atrial fibrillation",
+      "version": "2024",
+      "urls": [
+        "https://www.escardio.org/guidelines/clinical-practice-guidelines/all-esc-practice-guidelines/atrial-fibrillation/"
+      ],
+      "implementation_scope": "AF follow-up context and explicit absence of a stand-alone future-AF ECG baseline"
+    },
+    {
+      "source_id": "ase_eacvi_chamber_2015",
+      "title": "Recommendations for Cardiac Chamber Quantification by Echocardiography in Adults",
+      "version": "2015",
+      "doi": "10.1016/j.echo.2014.10.003",
+      "urls": [
+        "https://www.asecho.org/guideline/cardiac-chamber-quantification-by-echo-in-adults/"
+      ],
+      "implementation_scope": "Clinical echo reference thresholds; not an ECG comparator"
+    },
+    {
+      "source_id": "ase_right_heart_ph_2025",
+      "title": "Guidelines for the Echocardiographic Assessment of the Right Heart in Adults and Special Considerations in Pulmonary Hypertension",
+      "version": "2025",
+      "doi": "10.1016/j.echo.2025.01.006",
+      "urls": [
+        "https://www.asecho.org/guideline/right-heart-in-adults-pulmonary-hypertension/",
+        "https://www.asecho.org/wp-content/uploads/2025/03/PIIS0894731725000379.pdf"
+      ],
+      "implementation_scope": "Current right-heart size, function and hemodynamic reference context. Protocol-specified label thresholds remain versioned and are never silently retuned after development starts."
+    },
+    {
+      "source_id": "wellens_original_1982",
+      "title": "Characteristic electrocardiographic pattern indicating a critical stenosis high in left anterior descending coronary artery in patients admitted because of impending myocardial infarction",
+      "version": "1982",
+      "doi": "10.1016/0002-8703(82)90480-X",
+      "urls": [
+        "https://www.sciencedirect.com/science/article/pii/000287038290480X"
+      ],
+      "implementation_scope": "Named Wellens morphology comparator; clinical context is not inferred from ECG morphology"
+    },
+    {
+      "source_id": "de_winter_original_2008",
+      "title": "A New ECG Sign of Proximal LAD Occlusion",
+      "version": "2008",
+      "doi": "10.1056/NEJMc0804737",
+      "urls": [
+        "https://www.nejm.org/doi/abs/10.1056/NEJMc0804737"
+      ],
+      "implementation_scope": "Named de Winter morphology comparator; occlusion is not inferred without clinical reference evidence"
+    },
+    {
+      "source_id": "pulmonary_embolism_ecg_review_2001",
+      "title": "Electrocardiographic manifestations of pulmonary embolism",
+      "version": "2001",
+      "urls": [
+        "https://pubmed.ncbi.nlm.nih.gov/11593473/"
+      ],
+      "implementation_scope": "S1Q3T3 as a nonspecific supportive right-heart-strain pattern"
+    },
+    {
+      "source_id": "hypokalemia_multicenter_cohort_2024",
+      "title": "Prevalence and prognostic value of electrocardiographic abnormalities in hypokalemia: A multicenter cohort study",
+      "version": "2024",
+      "urls": [
+        "https://pubmed.ncbi.nlm.nih.gov/38098171/"
+      ],
+      "implementation_scope": "Supports explicit absence of a sufficiently sensitive stand-alone binary ECG diagnostic rule for hypokalemia; laboratory potassium remains the reference"
+    }
+  ],
+  "notes": "This local metadata lock pins the exact sources and implementation scope used by the registry. It contains bibliographic metadata, not copyrighted source documents. Any edit changes the SHA-256 included in run provenance."
+}

@@ -1,0 +1,22 @@
+[tool.ruff]
+target-version = "py312"
+line-length = 88
+
+[tool.ruff.lint]
+# Blocking correctness classes for this legacy codebase. Formatting/import
+# cleanup is deliberately separate from the scientific preflight.
+select = ["E9", "F63", "F7", "F82"]
+
+[tool.ruff.lint.per-file-ignores]
+# Ruff treats names explicitly deleted after completed blockwise closures as
+# undefined inside those closures. The deletion is the intentional peak-RAM
+# release after every executor/checkpoint block.
+"vcg_biomarker/mimic/phenome.py" = ["F821"]
+"vcg_biomarker/mimic/future_phenome.py" = ["F821"]
+
+[tool.mypy]
+python_version = "3.12"
+ignore_missing_imports = true
+check_untyped_defs = true
+warn_unused_ignores = true
+no_implicit_optional = true

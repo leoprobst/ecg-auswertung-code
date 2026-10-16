@@ -1,0 +1,4 @@
+# Install ONLY into .simulation-deps, not into the production environment.
+# python -m pip install --no-deps --only-binary=:all: --target .simulation-deps -r requirements-simulation-optional.txt
+myokit==1.39.2
+lxml==6.0.2
