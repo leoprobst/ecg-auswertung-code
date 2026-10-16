@@ -245,6 +245,17 @@
 "pub12.werkzeuge_pub12_aw239_aw239_basis_py" = "/path/to/pub12_werkzeuge_pub12_aw239_aw239_basis_py"  # used in: pub12_program_comparison
 "pub12.werkzeuge_pub12_aw245" = "/path/to/pub12_werkzeuge_pub12_aw245"  # used in: pub12_program_comparison
 "pub12.werkzeuge_pub12_schwellen_aw228_py" = "/path/to/pub12_werkzeuge_pub12_schwellen_aw228_py"  # used in: pub12_program_comparison
+"pub13.aw236" = "/path/to/pub13_aw236"  # used in: pub13_classical_rules
+"pub13.code15_exams_csv" = "/path/to/pub13_code15_exams_csv"  # used in: pub13_classical_rules
+"pub13.koordination_testzugriffe_md" = "/path/to/pub13_koordination_testzugriffe_md"  # used in: pub13_classical_rules
+"pub13.mimic_iv_3_1_hosp" = "/path/to/pub13_mimic_iv_3_1_hosp"  # used in: pub13_classical_rules
+"pub13.mimic_iv_ecg_diagnostic_electrocardiogram_matched_subset_1_0_machine_measurements_csv" = "/path/to/pub13_mimic_iv_ecg_diagnostic_electrocardiogram_matched_subset_1_0_machine_measurements_csv"  # used in: pub13_classical_rules
+"pub13.mimic_validation" = "/path/to/pub13_mimic_validation"  # used in: pub13_classical_rules
+"pub13.mimic_validation_labels_sealed_locked_clinical_labels_wide_parquet" = "/path/to/pub13_mimic_validation_labels_sealed_locked_clinical_labels_wide_parquet"  # used in: pub13_classical_rules
+"pub13.publikationen_pub_13_kardiologie_codelisten_k1_codelisten_k1_csv" = "/path/to/pub13_publikationen_pub_13_kardiologie_codelisten_k1_codelisten_k1_csv"  # used in: pub13_classical_rules
+"pub13.publikationen_pub_13_kardiologie_ergebnisse_aw236" = "/path/to/pub13_publikationen_pub_13_kardiologie_ergebnisse_aw236"  # used in: pub13_classical_rules
+"pub13.publikationen_pub_13_kardiologie_spezifikation_k1_entwurf_v3_2_md" = "/path/to/pub13_publikationen_pub_13_kardiologie_spezifikation_k1_entwurf_v3_2_md"  # used in: pub13_classical_rules
+"pub13.zaehlung_aw107_reproduktion_final_counts_duckdb" = "/path/to/pub13_zaehlung_aw107_reproduktion_final_counts_duckdb"  # used in: pub13_classical_rules
 "s5.analyse_mc_med_1_0_1" = "/path/to/s5_analyse_mc_med_1_0_1"  # used in: s5_time_alignment
 "s5.analyse_mc_med_s5" = "/path/to/s5_analyse_mc_med_s5"  # used in: s5_time_alignment
 "s5.analyse_mc_med_s5_pipeline" = "/path/to/s5_analyse_mc_med_s5_pipeline"  # used in: s5_time_alignment

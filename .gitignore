@@ -7,3 +7,4 @@ reference_values.json
 *.parquet
 *.npz
 *.pkl
+!pub13_classical_rules/codelists/codelisten_k1.csv

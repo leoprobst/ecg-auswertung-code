@@ -71,6 +71,9 @@
  "pub12/aw247": [
   "pub12_program_comparison/single_pair_export"
  ],
+ "pub13": [
+  "pub13_classical_rules"
+ ],
  "rv_a1": [
   "a_measurement_audit/repeatability"
  ],

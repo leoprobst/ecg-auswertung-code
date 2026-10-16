@@ -1,10 +1,10 @@
-# Analysis code for four ECG/VCG preprints
+# Analysis code for five ECG/VCG preprints
 
-This repository holds the analysis scripts behind four preprints by Leo Probst, together with the frozen research state of the measurement software that produced their inputs. It contains code only: no patient data, no ECG waveforms, no record-level or individual-level values, and no result tables. All numbers reported in the manuscripts are in the manuscripts and their supplements.
+This repository holds the analysis scripts behind five preprints by Leo Probst, together with the frozen research state of the measurement software that produced their inputs. It contains code only: no patient data, no ECG waveforms, no record-level or individual-level values, and no result tables. All numbers reported in the manuscripts are in the manuscripts and their supplements.
 
-Status: released as v1.0.0 (16 October 2026). An archived copy with a DOI (Zenodo) may follow; the GitHub release v1.0.0 is the version cited in the preprints. Aggregate results are part of the preprints and their supplementary files, not of this repository.
+Status: v1.0.0 (16 October 2026) is the version cited in the preprints of the first four works. v1.1.0 adds `pub13_classical_rules/` and leaves everything else unchanged. An archived copy with a DOI (Zenodo) may follow. Aggregate results are part of the preprints and their supplementary files, not of this repository.
 
-## The four works
+## The five works
 
 | Folder | Working title | What the code does |
 |---|---|---|
@@ -12,6 +12,7 @@ Status: released as v1.0.0 (16 October 2026). An archived copy with a DOI (Zenod
 | `b_qrs_t_coupling/` | Does QRS-T loop coupling add to the QRS-T angle? Frechet distance and reduced ejection fraction in hospital ECGs, with named measurement-error scenarios | Association of a Frechet-distance marker with reduced left ventricular ejection fraction, measurement-error corrections, sensitivity analyses. |
 | `s5_time_alignment/` | Heart-rate-based clock alignment in intensive-care ECGs, serial-ECG matching and administrative follow-up in MIMIC-IV | Alignment of bedside heart-rate records and ECG-derived rates, simulation of known offsets, matching, follow-up counts, waveform-based validation in an emergency-department dataset. |
 | `pub12_program_comparison/` | Same name, different threshold call: QRS and QTc classification across ECG programs and public datasets | Threshold classification by several programs on the same recordings, repeat-versus-program disagreement, definition audit. |
+| `pub13_classical_rules/` | Testing classical ECG rules on routine machine measurements: only QTc above 500 ms met its criteria in both internal partitions | Pre-specified test of ten classical ECG rules (thirteen test units) on routine machine measurements: rule functions, evaluation script of the frozen version, report writer, the explicit diagnosis code lists, tests, and the supplement figure. |
 | `shared_support/` | (not a manuscript) | Helper modules that the scripts of several works import (statistics core, catalog continuation, tests of the variant code). |
 | `looplens_snapshot_2026-10-07/` | (not a manuscript) | Frozen research state of the measurement software, see below. |
 
@@ -32,8 +33,9 @@ None of the datasets is redistributed. Use your own copies and point the scripts
 
 | Dataset | Used in | Access |
 |---|---|---|
-| MIMIC-IV-ECG 1.0 (doi 10.13026/4nqg-sb35) | A, B, S5 | open on PhysioNet, ODbL 1.0 |
-| MIMIC-IV 3.1 (doi 10.13026/kpb9-mt58) | A, B, S5 | PhysioNet credentialed health data license 1.5.0 |
+| MIMIC-IV-ECG 1.0 (doi 10.13026/4nqg-sb35) | A, B, S5, PUB-13 | open on PhysioNet, ODbL 1.0 |
+| MIMIC-IV 3.1 (doi 10.13026/kpb9-mt58) | A, B, S5, PUB-13 |
+| CODE-15% (doi 10.5281/zenodo.4916206) | PUB-13 | open on Zenodo, CC BY 4.0 | PhysioNet credentialed health data license 1.5.0 |
 | MIMIC-IV-ECHO 1.0 (doi 10.13026/nrjh-5r77) | B | PhysioNet credentialed health data license 1.5.0 |
 | MC-MED 1.0.1 (doi 10.13026/wvyw-g663) | S5 | PhysioNet credentialed, data use agreement required |
 | PTB-XL 1.0.3 (doi 10.13026/kfzx-aw45), PTB-XL+ 1.0.1 (doi 10.13026/g6h6-7g88) | A, PUB-12 | open on PhysioNet, CC BY 4.0 |
