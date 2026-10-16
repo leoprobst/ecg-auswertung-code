@@ -86,6 +86,12 @@
  "transform_katalog": [
   "shared_support/transform_katalog"
  ],
+ "uhrzeit_aw110": [
+  "s5_time_alignment/population_alignment"
+ ],
+ "uhrzeit_aw115": [
+  "s5_time_alignment/stay_analysis"
+ ],
  "varianten": [
   "a_measurement_audit/matrix_variants",
   "b_qrs_t_coupling/curve_variants"

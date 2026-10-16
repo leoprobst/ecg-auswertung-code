@@ -10,7 +10,7 @@ MIMIC-IV-ECG 1.0 and MIMIC-IV 3.1 (icu and hosp modules); MC-MED 1.0.1 for the w
 
 ## Scripts
 
-44 files: 5 original and unchanged, 36 cleaned originals, 3 translated. The status column uses the three terms explained in the root README; cleaned originals and translated files received some of five edit types: paths replaced by data_path, user or cloud-folder names removed, long dashes replaced, unpublished expected values moved to the local reference file, unpublished numbers removed from texts. The last column names the part of the manuscript or supplement whose numbers depend on the script, as far as it could be traced (`support module` = used by other scripts; `not traceable` = no reported item found). Folder names are descriptive; the scripts themselves keep their original file names because they import each other by name.
+46 files: 5 original and unchanged, 38 cleaned originals, 3 translated. The status column uses the three terms explained in the root README; cleaned originals and translated files received some of five edit types: paths replaced by data_path, user or cloud-folder names removed, long dashes replaced, unpublished expected values moved to the local reference file, unpublished numbers removed from texts. The last column names the part of the manuscript or supplement whose numbers depend on the script, as far as it could be traced (`support module` = used by other scripts; `not traceable` = no reported item found). Folder names are descriptive; the scripts themselves keep their original file names because they import each other by name.
 
 
 ### `earlier_analyses/`
@@ -57,6 +57,22 @@ Landmark and risk-set selection of the documented-AF analysis, named in the numb
 | `a155_research_documented_af.py` | cleaned original | Defines the report rule for sinus rhythm and the ordered gates of the risk set (usable metadata, reported sinus, no prior or index AF, discharge within 7 days, no known AF through discharge, consistent event coverage, positive observed time), then fits the post-discharge documented-AF association. | Supplement S3.1 (selection order, report rule and AF source of the landmark selection) |
 | `a155_research_low_cost.py` | cleaned original | Helper library of the post-discharge analyses: atomic JSON writing, file hashing, resumable checkpoints, table outputs and the shared run paths and limits that the documented-AF scripts import. | support module for Supplement S3.1 (imported by the landmark-selection scripts) |
 | `onedrive_names.py` | cleaned original | Checks and rewrites file-name components so that copies are safe for cloud-synced folders (reserved names, unsafe characters, length) without touching scientific identifiers. | support module for Supplement S3.1 (imported by a155_research_low_cost.py) |
+
+### `population_alignment/`
+
+Original computation of the population heart-rate alignment curve and of its person bootstrap (1,000 resamples per partition, seed 110).
+
+| Script | Status | What it does | Manuscript part |
+|---|---|---|---|
+| `rechnen.py` | cleaned original | Computes the heart-rate alignment of the development people on the offset grid (nearest chart value within 30 min, ties earlier), the population error curve and the person bootstrap intervals with seed 110, reading only the released development data. | Table 1 and Section 3.1 (population curve and identifiability); Supplement S1.1 to S1.4 (bootstrap intervals, seed 110); Figure 1 |
+
+### `stay_analysis/`
+
+Original computation of the stay-level analysis (pooling of stays per person, person-cluster resampling with 1,000 resamples per partition, seed 115).
+
+| Script | Status | What it does | Manuscript part |
+|---|---|---|---|
+| `rechnen.py` | cleaned original | Pools the stays with at least three complete ECGs per person on the aligned grid, applies the half-agreement and within-window criteria and draws the person-cluster resamples with seed 115, reading the aggregates of the first computation read-only. | Section 3.1 (stay-level identifiability); Supplement S6.2 (stay uncertainty, seed 115) |
 
 ### `wave0_checks/`
 
@@ -136,6 +152,8 @@ SHA-256 of every file as it was when it ran (original) and as published. Unchang
 | `landmark_selection/a155_research_documented_af.py` | cleaned original | `dbd833afbbfe564799cecbff657df95fe5880602244232ac4b4580a6b7719be3` | `1425bf2d11825aa89f5a9593fc963ce34685496ed37a321e3496b8ee0c11d562` | local paths replaced by data_path (1); user or cloud-folder names removed (1) |
 | `landmark_selection/a155_research_low_cost.py` | cleaned original | `8d7a522a9bcb6876a0037a8d0e25a51cd03a9432cc8344043e6177b2b25f950a` | `d46cf72996b49bc12780a84c4af1a955eadd0ef18b4002d41ebe6ed5134a6117` | local paths replaced by data_path (2); user or cloud-folder names removed (2) |
 | `landmark_selection/onedrive_names.py` | cleaned original | `3193d36b8cc2ee0abb1f2ad8dcbed9266912e106fb70d9afd8dc798753c3abfc` | `6985dfba6d092c28d3afdffa869f5dba6e775620876f1c8db6099ae259dfcd2e` | user or cloud-folder names removed (2) |
+| `population_alignment/rechnen.py` | cleaned original | `7d8040ad501d1dc21dc3372766c449ae2b847dc03ea325b7cd169606aa67787c` | `bca2a0f0f2421ad2dc6026c20efb2fe0f27ad2efd44e04498d5fd2061bf77304` | local paths replaced by data_path (2) |
+| `stay_analysis/rechnen.py` | cleaned original | `dbf2afc57285ac0a5a48356e7d78d8bea58ce61290d27c3bd91b55a39df1030f` | `2eefc22dbab459cc5e18d2f2690b4f50feacb1a76996a00656634ff99d1981c2` | local paths replaced by data_path (2) |
 | `wave0_checks/s5_r1_abgleich.py` | cleaned original | `fad55b2b3fa1d3dc99c39889f7f0e90dc5dd26f615bb28332a4aa49898d1df63` | `7ae12118ec8d70ec0d539daf9b3c9e10c7cf803d19255a7b05b4237da6a00ef9` | local paths replaced by data_path (1); user or cloud-folder names removed (2); unpublished values moved to the local reference file (2); unpublished numbers removed from texts |
 | `wave1_addendum/g243_audit_agg.py` | cleaned original | `31ef1bd2dcd64b0506ad6d41a78f2c5afb8f68d5126ef8e7ebcb643f2a528e2e` | `f3a0981034266921965bed96dc6e314dd60748e31129589d554347f85258003d` | local paths replaced by data_path (1) |
 | `wave1_addendum/g243_audit_zaehlung.py` | cleaned original | `6b0f4f20f3850e8c0c1b16e4b1635a0c87f9adf09b9ae597f415a2950fac688a` | `0e9d21bb84c9386da62aa7bb200575577a63597fa9653feb14c3b45476629bb9` | local paths replaced by data_path (3) |

@@ -286,9 +286,11 @@
 "s5.s3_seriell_aw118_reproduktion_final_quellen_hf_json" = "/path/to/s5_s3_seriell_aw118_reproduktion_final_quellen_hf_json"  # used in: s5_time_alignment
 "s5.scanner_v10_1_tools_k_coord_ram_reservierung_py" = "/path/to/s5_scanner_v10_1_tools_k_coord_ram_reservierung_py"  # used in: s5_time_alignment
 "s5.single_marker_feature_cache_dir" = "/path/to/s5_single_marker_feature_cache_dir"  # used in: s5_time_alignment
+"s5.uhrzeit_aw110" = "/path/to/s5_uhrzeit_aw110"  # used in: s5_time_alignment
 "s5.uhrzeit_aw110_audit_duckdb" = "/path/to/s5_uhrzeit_aw110_audit_duckdb"  # used in: s5_time_alignment
 "s5.uhrzeit_aw110_icu_results_json" = "/path/to/s5_uhrzeit_aw110_icu_results_json"  # used in: s5_time_alignment
 "s5.uhrzeit_aw110_spec_lock_json" = "/path/to/s5_uhrzeit_aw110_spec_lock_json"  # used in: s5_time_alignment
+"s5.uhrzeit_aw115" = "/path/to/s5_uhrzeit_aw115"  # used in: s5_time_alignment
 "s5.vcg_analysis_cache_a155_2026_10_06_single_markers_cache_89d6aaf0a6b5957e" = "/path/to/s5_vcg_analysis_cache_a155_2026_10_06_single_markers_cache_89d6aaf0a6b5957e"  # used in: s5_time_alignment
 "s5.venvs_auswertung_scripts_python_exe" = "/path/to/s5_venvs_auswertung_scripts_python_exe"  # used in: s5_time_alignment
 "s5.zaehlung_aw107_reproduktion_final_counts_duckdb" = "/path/to/s5_zaehlung_aw107_reproduktion_final_counts_duckdb"  # used in: s5_time_alignment
