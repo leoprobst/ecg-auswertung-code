@@ -2,7 +2,7 @@
 
 This repository holds the analysis scripts behind four preprints by Leo Probst, together with the frozen research state of the measurement software that produced their inputs. It contains code only: no patient data, no ECG waveforms, no record-level or individual-level values, and no result tables. All numbers reported in the manuscripts are in the manuscripts and their supplements.
 
-Status: prepared for release v1.0.0; the archived version (Zenodo) does not exist yet.
+Status: released as v1.0.0 (16 October 2026). An archived copy with a DOI (Zenodo) may follow; the GitHub release v1.0.0 is the version cited in the preprints. Aggregate results are part of the preprints and their supplementary files, not of this repository.
 
 ## The four works
 
