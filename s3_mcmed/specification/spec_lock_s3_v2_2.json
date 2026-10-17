@@ -1,0 +1,204 @@
+{
+ "gebunden": "2026-10-16T18:07:45.792103+00:00",
+ "hashes": {
+  "spezifikation": "8e09350dab33bc5ce81e2a11127899c2ba8afa84de5a5b4f6833a3577e42381e",
+  "skript": "04ac15dae0f8a6a0a9b2d154e43b4ff3d240acd410d10707498fa53d48c9dcea",
+  "abhaengig": {
+   "s3_signal.py": "6450c7e5d0a0205f4f2333b93c992354bb2df41f84f2be811ca1165fe5784832",
+   "aw197_messung.py": "03e2b2d28aa04a231c6d3280376255e329fdf4d8fa28465f0b4891ccb35e7f67",
+   "aw203_messung.py": "37e3b06a9dd84ba4ab2f16d98c940ad04d42325a8348d12ed21bf04e0614f193"
+  },
+  "konfiguration": "12a93e65e801a48094bec1c454f4ea1323fd34983e249599afabf0c9b826f823",
+  "vertrag": "c282902b12e36b833bf16dc7b3ae58b9f98936b1468bbc4b7b43bc6c0f522aa0",
+  "pipeline": "aw255-v3"
+ },
+ "cfg": {
+  "version": "s3-mcmed-v2.2",
+  "seeds": {
+   "bootstrap": 255001,
+   "nk1": 255002,
+   "nk2": 255003,
+   "auc": 255005,
+   "pk": 255006,
+   "pksample": 255008,
+   "nk1_block": 255009,
+   "annotation": 255010,
+   "split": 255011
+  },
+  "bootstrap_n": 2000,
+  "nk2_n": 500,
+  "paar": {
+   "gap_h_min": 1.0,
+   "gap_h_max": 12.0
+  },
+  "behandlung": {
+   "vor_dok_s": 7200,
+   "vor_unklar_s": 21600
+  },
+  "fenster": {
+   "puffer_s": 900,
+   "cap_nach_s": 10800,
+   "block_s": 10,
+   "raster_s": 5,
+   "messfenster_s": 60,
+   "rep_abstand_s": 90,
+   "shift_min_s": 7200,
+   "shift_max_s": 21600,
+   "shift_versuche": 20,
+   "hf_halbfenster_s": 300,
+   "hf_min_werte": 3
+  },
+  "messkette": {
+   "hf_schwelle": 0.0789531424618521,
+   "polaritaet_unsicher_ratio": 0.7,
+   "aw197": {
+    "rr_min": 0.3,
+    "rr_max": 2.0,
+    "ecto": 0.2,
+    "med_n": 11,
+    "min_cover_s": 20.0,
+    "irr_frac": 0.3,
+    "beat_pre": 0.45,
+    "beat_post": 0.55,
+    "hf_hp": 50.0,
+    "hf_pre": 0.25,
+    "hf_post": 0.45,
+    "sat_abs": 4.5,
+    "flat_ms": 40.0,
+    "pace_slew": 300.0,
+    "pace_frac": 0.3,
+    "min_qrs_amp": 0.15,
+    "pad_s": 3.0
+   },
+   "aw203_v2": {
+    "pre_s": 0.2,
+    "post_rr": 0.75,
+    "ts_k": 0.18,
+    "ts_rr": 0.25,
+    "te_k": 0.5,
+    "te_rr": 0.6,
+    "slope_k": 0.12,
+    "thr_onset": 0.1,
+    "min_r": 0.1,
+    "min_tile": 2500
+   }
+  },
+  "primaer": {
+   "erst_k_max": 6.0
+  },
+  "min_schaetzung": {
+   "paare": 30,
+   "personen": 10
+  },
+  "hf_spline": {
+   "knoten": [
+    55.0,
+    70.0,
+    85.0,
+    110.0
+   ],
+   "grenzen": [
+    30.0,
+    220.0
+   ]
+  },
+  "h1": {
+   "grenze": 0.01
+  },
+  "h2": {
+   "grenze": 0.2
+  },
+  "h3": {
+   "k_min": 6.5,
+   "grenze": 0.29,
+   "n_min": 30
+  },
+  "h4": {
+   "k_erst_min": 6.0,
+   "rep_min_h": 0.25,
+   "rep_max_h": 6.0,
+   "pe_min": 5.5,
+   "rn_max": 5.0,
+   "rn_abfall": 1.0,
+   "n_min_gruppe": 30,
+   "schwelle_t_mv": 0.3,
+   "auc_marke": 0.65
+  },
+  "klinisch": {
+   "mm_je_mv": 10.0,
+   "dk_strata": [
+    -1.0,
+    -0.5,
+    0.5,
+    1.0
+   ],
+   "rc_z": 1.96
+  },
+  "na": {
+   "schritt": 5.0,
+   "grenze": 0.005,
+   "korr_max": 0.3
+  },
+  "nk": {
+   "grenze": 0.005,
+   "n_min": 10
+  },
+  "messfehler": {
+   "sd_k": [
+    0.1,
+    0.2
+   ]
+  },
+  "annotation": {
+   "n": 100
+  },
+  "kaliumsenkend": [
+   "insulin_regular",
+   "glukose_bolus",
+   "bikarbonat_iv",
+   "albuterol",
+   "k_binder"
+  ],
+  "ecg_wirksam": [
+   "calcium_iv"
+  ],
+  "dok_klassen": [
+   "insulin_regular",
+   "glukose_bolus",
+   "bikarbonat_iv",
+   "albuterol",
+   "k_binder",
+   "calcium_iv",
+   "kalium_gabe",
+   "dialyse"
+  ],
+  "unklar_klassen": [
+   "insulin_andere",
+   "schleifendiuretikum"
+  ]
+ },
+ "vertrag": {
+  "zeit": "UTC-Sekunden seit 1970-01-01; CSV-Zeitstempel (Suffix Z) als UTC, WFDB-Kopfzeit (Uhrzeit, Datum) als UTC gelesen",
+  "signal": "Ableitung II in mV (Kopfzeile units muss mV sein)",
+  "kalium": "mmol/L",
+  "bikarbonat": "mmol/L",
+  "natrium": "mmol/L",
+  "hf": "1/min",
+  "zeitpruefung": "Median(erster Monitor-HF-Zeitstempel minus erster Segmentbeginn) zwischen -60 und 300 s"
+ },
+ "eingaben": {
+  "datensatz": "MC-MED 1.0.1",
+  "sha256sums_pfad": "<local path>/SHA256SUMS.txt",
+  "sha256sums_sha256": "ebcb7c677a74c3ea9f8371d45329490b16e6dc62fc4275b8d0aa2fd32f274070",
+  "eingabedateien_laut_sha256sums": {
+   "labs.csv": "254ab541f9dc61c175c177dc8d53b9839a37b7f8cb6ef64a200574ba32c31611",
+   "orders.csv": "d4521018baac4bb85d4a15098bb176a2aeaace81e042abbad0d27a1f036822d9",
+   "visits.csv": "9fea50d6ffc35affb827846cdfc4fc2f3bd23463a1d38192cb3de3c1e9552e86",
+   "numerics.csv": "225509cec1822e7b89bb047837775c90cf40d1aa8136bd94eb85330782d66ab9",
+   "split_random_train.csv": "b662959b0ac6f3ef99ac3cfa23f84d66b4b16d57c24da4d2ebb2ab091463c88e",
+   "split_random_val.csv": "7430416314733695dd3496201b2c6fabac05f07f8c95ff5edb163f238d2dd397",
+   "split_random_test.csv": "73a72bc787eb4b7a0fec6a52c004488ca0dcb70c2f4b9c6d998a53da4bf0fbdd"
+  },
+  "hinweis": "Der Gesamtlauf prueft vor dem Laden alle Eingaben (einschliesslich Testsplit) gegen diese Datei; Abbruch bei Abweichung oder fehlender Datei."
+ }
+}
